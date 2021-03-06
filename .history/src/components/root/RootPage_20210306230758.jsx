@@ -1,0 +1,152 @@
+import React from 'react';
+import { createUseStyles } from 'react-jss';
+import { HeaderScroll } from '../header/HeaderScroll';
+import { HeaderSlide } from '../header/HeaderSlide';
+import { Footer } from '../footer/Footer';
+import { Switch, Route, useLocation, useRouteMatch, Redirect } from 'react-router-dom';
+import { ThemeContext, themes } from '../../App';
+import { Category } from '../category/Category';
+import { TransitionGroup, CSSTransition } from 'react-transition-group';
+import {createHomeUrl } from '../../utils/AppUrlCreators';
+
+const createRootPageStyles = createUseStyles(() => ({
+
+    rootPage: ({ background, color }) => ({
+        width: '100%',
+        minHeight: '100vh',
+        display: 'flex',
+        flexDirection: 'column',
+        color: color,
+        backgroundColor: background,
+        overflow: 'hidden',
+    }),
+
+    fadeEnter: {
+        opacity: 0,
+        transition: 'all 300ms',
+    },
+
+    fadeEnterActive: {
+        opacity: 1,
+        transition: 'all 300ms',
+    },
+
+
+    fadeExit: {
+        opacity: 1,
+        transition: 'all 300ms',
+    },
+
+    fadeExitActive: {
+        opacity: 0,
+        transition: 'all 300ms',
+    },
+
+
+    [`@media (max-width: ${global.maxWidth}px)`]: {
+
+
+    },
+}));
+
+const debounce = (fn, ms) => {
+    let timer;
+    return () => {
+        clearTimeout(timer)
+        timer = setTimeout(() => {
+            timer = null
+            fn.apply(this, arguments)
+        }, ms)
+    };
+}
+
+export const RootPage = ({ categories, posts }) => {
+    const { theme } = React.useContext(ThemeContext);
+    let location = useLocation();
+    let { path } = useRouteMatch();
+    const [winWidth, setWinWidth] = React.useState(window.innerWidth);
+    const [readMode, setReadMode] = React.useState(false);
+    const [initialCurrentItem, setInitialCurrentItem] = React.useState();
+    const pathname = location.pathname.replace(/\//, '');
+
+    React.useEffect(() => {
+        const debouncedHandleResize = debounce(() => setWinWidth(window.innerWidth), 300);
+        window.addEventListener('resize', debouncedHandleResize);
+        return () => window.removeEventListener('resize', debouncedHandleResize);
+    })
+
+    React.useEffect(() => {
+        console.log('rere');
+        console.log('categories', categories);
+        categories && categories.map((item, i) => {
+            console.log('pathname', location.pathname);
+            if (item.custom_url === pathname) {
+                console.log('set')
+                setInitialCurrentItem(i)
+            }
+        });
+    }, [categories]);
+
+    const onMenuClick = (i) => {
+        setInitialCurrentItem(i);
+    }
+
+    const classes = createRootPageStyles({ background: theme.background, color: theme.color });
+
+    return (
+        <ThemeContext.Consumer>
+            {({ setTheme }) => (
+                <div className={classes.rootPage}>
+                    {winWidth > global.maxWidth
+                        ? (
+                            <HeaderScroll
+                                categories={categories}
+                                initialCurrentItem={initialCurrentItem}
+                                onMenuClick={onMenuClick}
+                            />
+                        ) : (
+                            <HeaderSlide
+                                categories={categories}
+                                initialCurrentItem={initialCurrentItem}
+                                onMenuClick={onMenuClick}
+                            />
+                        )
+                    }
+                    <TransitionGroup>
+                        <CSSTransition
+                            key={location.key}
+                            classNames={{
+                                enter: classes.fadeEnter,
+                                enterActive: classes.fadeEnterActive,
+                                exit: classes.fadeExit,
+                                exitActive: classes.fadeExitActive,
+                            }}
+                            timeout={300}
+                        >
+                            <Switch location={location}>
+                                {categories.map((category, i) =>
+                                    <Route path={path + category.custom_url} key={i} >
+                                        <Category
+                                            category={category}
+                                            post={posts.find(post => post.id === category.featuring_post_id)}
+                                            readMode={readMode}
+                                            onSetPlayMode={() => {
+                                                setReadMode(false);
+                                                setTheme(themes.black);
+                                            }}
+                                            onSetReadMode={() => {
+                                                setReadMode(true);
+                                                setTheme(themes.white);
+                                            }}
+                                        />
+                                    </Route>
+                                )}
+                            </Switch>
+                        </CSSTransition>
+                    </TransitionGroup>
+                    <Footer />
+                </div>
+            )}
+        </ThemeContext.Consumer>
+    );
+};
