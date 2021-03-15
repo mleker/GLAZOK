@@ -1,12 +1,15 @@
 import React from 'react';
 import { jss } from 'react-jss';
-import PanamaOtf from './fonts/Panama.otf';
-import PanamaWoff from './fonts/Panama.woff';
 import { RootPage } from './components/root/RootPage';
-import { AboutPage } from './components/about/AboutPage';
+import { RootPageMobile } from './components/root/RootPageMobile';
 import { getCategories, getPosts } from './utils/Api';
 import 'normalize.css';
-import { createHomeUrl, createAboutUrl } from './utils/AppUrlCreators';
+import { createHomeUrl } from './utils/AppUrlCreators';
+import PanamaOtf from './fonts/Panama.otf';
+import PanamaEot from './fonts/Panama.eot';
+import PanamaWoff from './fonts/Panama.woff';
+import PanamaWoff2 from './fonts/Panama.woff2';
+import PanamaTtf from './fonts/Panama.ttf';
 require('./assets/android-chrome-192x192.png');
 require('./assets/android-chrome-256x256.png');
 require('./assets/apple-touch-icon.png');
@@ -20,6 +23,7 @@ require('./assets/share-fb.jpg');
 import { Route, Redirect, Switch } from 'react-router-dom';
 import { Loading } from './components/loading/Loading';
 import { Error } from './components/error/Error';
+import { debounce } from './utils/UtilFuncs';
 
 global.maxWidth = 690;
 
@@ -31,6 +35,9 @@ jss.createStyleSheet({
     src: `url(${PanamaWoff}) format("woff")`,
     fallbacks: [
       { src: `url(${PanamaOtf}) format("otf")` },
+      { src: `url(${PanamaTtf}) format("truetype")` },
+      { src: `url(${PanamaWoff2}) format("woff2")` },
+      { src: `url(${PanamaEot}) format("embedded-opentype")` },
     ],
   },
 }).attach();
@@ -83,15 +90,24 @@ export const themes = {
   }
 };
 
+export const basename = process.env.NODE_ENV === 'production' ? '/glazok' : '/';
+
 export const ThemeContext = React.createContext(themes.black);
 
 export const mailchimpUrl = '//gmail.us10.list-manage.com/subscribe/post?u=d85f58b233c0f486796471e30&id=6066ed83ae';
 
 export const App = () => {
   const [theme, setTheme] = React.useState(themes.black);
+  const [winWidth, setWinWidth] = React.useState(window.innerWidth);
   const [categories, setCategories] = React.useState(null);
   const [posts, setPosts] = React.useState(null);
   const [error, setError] = React.useState();
+
+  React.useEffect(() => {
+    const debouncedHandleResize = debounce(() => setWinWidth(window.innerWidth), 300);
+    window.addEventListener('resize', debouncedHandleResize);
+    return () => window.removeEventListener('resize', debouncedHandleResize);
+  })
 
   React.useEffect(() => {
     getCategories()
@@ -120,11 +136,10 @@ export const App = () => {
       {categories && posts
         ? (
           <Switch>
-            <Route path={createAboutUrl()} component={AboutPage} />
             <Route path={createHomeUrl()}>
               <RootPage categories={categories} posts={posts} />
-              <Redirect from={createHomeUrl()} to={categories[0].custom_url} push={true} />
             </Route>
+            <Redirect from={createHomeUrl()} to={categories[0].custom_url} push={true} />
             <Route component={Error} />
           </Switch>
         ) : (

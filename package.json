@@ -3,10 +3,12 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "start": "webpack-dev-server",
+    "start": "NODE_ENV=development webpack-dev-server --config=webpack.config.dev.js --open",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "webpack -p --mode=production"
+    "build": "NODE_ENV=production webpack --config=webpack.config.prod.js",
+    "build-dev": "NODE_ENV=development webpack --config=webpack.config.dev.js"
   },
+
   "dependencies": {
     "jsonp": "^0.2.1",
     "jss": "^10.0.4",

@@ -1,6 +1,7 @@
 import React from 'react';
 import { createUseStyles } from 'react-jss';
-import { ThemeContext } from '../../App';
+import { ThemeContext, themes } from '../../App';
+import { apiUrl } from '../../utils/Api';
 import classNames from 'classnames';
 import { Error } from '../error/Error';
 
@@ -11,7 +12,7 @@ const createCategoryStyles = createUseStyles(() => ({
     to: { opacity: 1 },
   },
 
-  coverImage: ({ coverImage, background }) => ({
+  playModeBlock: ({ coverImage, background }) => ({
     background: `center / cover no-repeat url(${coverImage})`,
     backgroundColor: background,
     position: 'absolute',
@@ -25,16 +26,16 @@ const createCategoryStyles = createUseStyles(() => ({
   }),
 
   twoColumns: ({ background }) => ({
-    overflow: 'hidden',
-    position: 'absolute',
+    position: 'fixed',
     top: 98,
     left: 0,
     bottom: 0,
     right: 0,
     minWidth: 1200,
+    height: '100%',
     display: 'flex',
     fontSize: 45,
-    lineHeight: 1.1,
+    // lineHeight: 1.1,
     justifyContent: 'center',
     backgroundColor: background,
   }),
@@ -43,16 +44,20 @@ const createCategoryStyles = createUseStyles(() => ({
     width: 750,
     margin: 'auto',
     position: 'relative',
-    lineHeight: 1.1,
+    // lineHeight: 1.1,
   },
 
-  frame: ({ coverImage }) => ({
+  frame: {
     position: 'relative',
     height: 0,
     overflow: 'hidden',
     paddingBottom: '56%',
-    background: `center / cover no-repeat url(${coverImage})`,
+    backgroundColor: 'black',
     border: 'solid 2px white',
+  },
+
+  frameNoEmbed: ({ coverImage }) => ({
+    background: `center / cover no-repeat url(${coverImage})`,
   }),
 
   embed: {
@@ -67,7 +72,7 @@ const createCategoryStyles = createUseStyles(() => ({
     color: color,
     padding: '10px 15px 10px 15px',
     border: `2px solid ${color}`,
-    right: 0,
+    right: -0.5,
     transform: 'translateX(calc(100% - 2px))',
     top: 0,
     position: 'absolute',
@@ -108,6 +113,11 @@ const createCategoryStyles = createUseStyles(() => ({
     wordWrap: 'break-word',
   },
 
+  title: {
+    textTransform: 'uppercase',
+    paddingBottom: 5,
+  },
+
   secondColumn: {
     width: '50%',
     padding: 80,
@@ -133,7 +143,7 @@ const createCategoryStyles = createUseStyles(() => ({
     border: 'solid 2px black',
   },
 
-  textTitle: {
+  textFrameTitle: {
     textTransform: 'uppercase',
     paddingBottom: 5,
   },
@@ -164,6 +174,7 @@ const createCategoryStyles = createUseStyles(() => ({
       transform: 'translateY(calc(100% - 2px))',
       bottom: 0,
       top: 'auto',
+      right: 0,
     }),
   },
 
@@ -172,7 +183,7 @@ const createCategoryStyles = createUseStyles(() => ({
     twoColumns: () => ({
       top: 140,
     }),
-    
+
     frameCenterLink: () => ({
       fontSize: 40,
     }),
@@ -224,10 +235,11 @@ const debounce = (fn, ms) => {
   };
 }
 
-export const Category = ({ post, readMode, onSetReadMode, onSetPlayMode, className }) => {
-  const { theme } = React.useContext(ThemeContext);
+export const Category = React.forwardRef(({ post, readMode, onSetReadMode, onSetPlayMode, className }) => {
+  const { theme, setTheme } = React.useContext(ThemeContext);
   const [winWidth, setWinWidth] = React.useState(window.innerWidth);
   const [embedShowed, setEmbedShowed] = React.useState(false);
+  console.log(apiUrl);
 
   React.useEffect(() => {
     const debouncedHandleResize = debounce(() => setWinWidth(window.innerWidth), 300);
@@ -235,14 +247,16 @@ export const Category = ({ post, readMode, onSetReadMode, onSetPlayMode, classNa
     return () => window.removeEventListener('resize', debouncedHandleResize);
   })
 
-  // const coverImage = post && post.cover;
-  const coverImage = post && (
-    post.id % 2 === 0
-      ? 'https://d2kq0urxkarztv.cloudfront.net/56798cfc5d4e95117dc119a0/1926507/upload-43f44c24-8d71-43e1-9905-3eb8a3b0469d.png'
-      : 'https://d2kq0urxkarztv.cloudfront.net/56798cfc5d4e95117dc119a0/1896648/upload-eec7e0b6-4384-483a-8a24-acf81f6ebf7f.png'
-  );
+  React.useEffect(() => {
+    if (readMode) {
+      setTheme(themes.white);
+    } else {
+      setTheme(themes.black);
+    }
+  }, [])
 
-  const classes = createCategoryStyles({ coverImage, background: theme.background, color: theme.color });
+  const coverImage = post && post.cover;
+  const classes = createCategoryStyles({ coverImage: apiUrl + coverImage, background: theme.background, color: theme.color });
   const embed_url = post && post.embed_url;
 
   if (!post) {
@@ -252,25 +266,31 @@ export const Category = ({ post, readMode, onSetReadMode, onSetPlayMode, classNa
   return (
     readMode
       ? (
-        <>
-          <div className={classNames(classes.twoColumns, className)}>
+        <div className={classes.readModeBlock}>
+          <div className={classes.twoColumns}>
             <div className={classes.firstColumn}>
+              <div className={classes.title}>
+                {post.title}
+              </div>
               {winWidth > global.maxWidth ? post.description : post.short_description}
             </div>
             <div className={classes.secondColumn}>
+              <div className={classes.title}>
+                {post.title}
+              </div>
               {winWidth > global.maxWidth ? post.description_en : post.short_description_en}
             </div>
           </div>
           <div className={classes.textFrameWrapper}>
             <div className={classes.textFrame}>
               <div className={classes.textFrameFirstColumn}>
-                <div className={classes.textTitle}>
+                <div className={classes.textFrameTitle}>
                   {post.title}
                 </div>
                 {winWidth > global.maxWidth ? post.description : post.short_description}
               </div>
               <div className={classes.textFrameSecondColumn}>
-                <div className={classes.textTitle}>
+                <div className={classes.textFrameTitle}>
                   {post.title}
                 </div>
                 {winWidth > global.maxWidth ? post.description_en : post.short_description_en}
@@ -292,34 +312,38 @@ export const Category = ({ post, readMode, onSetReadMode, onSetPlayMode, classNa
               {'PLAY'}
             </div>
           </div>
-        </>
+        </div>
       ) : (
-        <div className={classes.coverImage}>
+        <div className={classes.playModeBlock}>
           <div className={classes.frameWrapper}>
-            <div className={classes.frame}>
+            <div className={classNames(classes.frame, !embedShowed && classes.frameNoEmbed)}>
               {embed_url.includes('youtube.com/embed') || embed_url.includes('player.vimeo.com')
                 ? (
                   <>
-                    <div
-                      className={classes.frameCenterLink}
-                      onClick={setEmbedShowed}
-                    >
-                      {'PLAY'}
-                    </div>
-                    {embedShowed && (
-                      <iframe
-                        className={classes.embed}
-                        src={`${post.embed_url}?autoplay=1`}
-                        frameBorder='0'
-                        allow={embed_url.includes('player.vimeo.com')
-                          ? "autoplay; fullscreen; picture-in-picture"
-                          : "accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                        }
-                        allowFullScreen='1'
-                        webkitallowfullscreen='1'
-                        mozallowfullscreen='1'
-                      />
-                    )}
+                    {embedShowed
+                      ? (
+                        <iframe
+                          className={classes.embed}
+                          src={`${post.embed_url}?autoplay=1`}
+                          frameBorder='0'
+                          allow={embed_url.includes('player.vimeo.com')
+                            ? "autoplay; fullscreen; picture-in-picture"
+                            : "accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                          }
+                          allowFullScreen='1'
+                          webkitallowfullscreen='1'
+                          mozallowfullscreen='1'
+                        />
+                      )
+                      : (
+                        <div
+                          className={classes.frameCenterLink}
+                          onClick={setEmbedShowed}
+                        >
+                          {'PLAY'}
+                        </div>
+                      )
+                    }
                   </>
                 )
                 : (
@@ -343,4 +367,4 @@ export const Category = ({ post, readMode, onSetReadMode, onSetPlayMode, classNa
         </div>
       )
   );
-};
+});

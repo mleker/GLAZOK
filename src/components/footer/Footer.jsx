@@ -2,7 +2,7 @@ import React from 'react';
 import { createUseStyles } from 'react-jss';
 import { Link } from '../link/Link';
 import { createAboutUrl, createHomeUrl } from '../../utils/AppUrlCreators';
-import { ThemeContext, mailchimpUrl } from '../../App';
+import { ThemeContext, mailchimpUrl, basename } from '../../App';
 import { useLocation } from 'react-router-dom';
 import MailchimpSubscribe from 'react-mailchimp-subscribe';
 import classNames from 'classnames';
@@ -117,9 +117,26 @@ export const Footer = () => {
     winWidth > global.maxWidth && (
       <div className={classes.footer}>
         <div className={classes.row}>
-          <a className={classes.item} href="/" target="blanc">Fb</a>
-          <a className={classes.item} href="/" target="blanc">In</a>
-          <a className={classes.item} href="/" target="blanc">Vk</a>
+          <a
+            className={classes.item}
+            href="https://www.facebook.com/glazok.tv"
+            target="blanc"
+          >
+            {'Fb'}
+          </a>
+          <a
+            className={classes.item}
+            href="https://www.instagram.com/glazok.me"
+            target="blanc">
+            {'In'}
+          </a>
+          <a
+            className={classes.item}
+            href="https://www.youtube.com/channel/UClbQ_fo9S2UrHKkGuqpShBw"
+            target="blanc"
+          >
+            {'Yt'}
+          </a>
         </div>
         <div className={classes.row}>
 

@@ -21,10 +21,10 @@ export const sendRequest = (requestUrl, method = 'GET', body = null) => {
         })
 };
 
-const devApiUrl = 'https://murmuring-coast-74656.herokuapp.com';
+export const apiUrl = 'https://admin.glazok.tv';
 
-export const getCategories = () => sendRequest(devApiUrl + '/categories.json');
+export const getCategories = () => sendRequest(apiUrl + '/categories.json');
 
-export const getPosts = () => sendRequest(devApiUrl + '/posts.json');
+export const getPosts = () => sendRequest(apiUrl + '/posts.json');
 
-export const getPost = (id) => sendRequest(devApiUrl + `/posts/${id}.json`);
+export const getPost = (id) => sendRequest(apiUrl + `/posts/${id}.json`);

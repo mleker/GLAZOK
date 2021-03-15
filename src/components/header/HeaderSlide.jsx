@@ -1,12 +1,11 @@
 import React from 'react';
 import { createUseStyles } from 'react-jss';
 import { createHomeUrl, createAboutUrl } from '../../utils/AppUrlCreators';
-import { Link } from '../link/Link';
 import { useHistory } from 'react-router-dom';
-import { ThemeContext, mailchimpUrl } from '../../App';
+import { ThemeContext, mailchimpUrl, basename } from '../../App';
 import { BurgerIcon } from './images/BurgerIcon';
 import { CrossIcon } from './images/CrossIcon';
-import classNames from 'classNames';
+import classNames from 'classnames';
 import MailchimpSubscribe from 'react-mailchimp-subscribe';
 
 const createHeaderSlideStyles = createUseStyles(() => ({
@@ -38,6 +37,7 @@ const createHeaderSlideStyles = createUseStyles(() => ({
 
     headerWithMenu: ({ background }) => ({
         backgroundColor: background,
+        height: '100%',
     }),
 
     arrow: {
@@ -77,6 +77,7 @@ const createHeaderSlideStyles = createUseStyles(() => ({
         right: 0,
         bottom: 0,
         width: '100vw',
+        height: '100vh',
         backgroundColor: background,
         textAlign: 'center',
         textTransform: 'uppercase',
@@ -96,8 +97,8 @@ const createHeaderSlideStyles = createUseStyles(() => ({
     inputWrapper: {
         display: 'flex',
         paddingTop: 20,
-        position: 'relative',
         justifyContent: 'center',
+        position: 'relative',
     },
 
     inputCloseButton: ({ color }) => ({
@@ -108,7 +109,11 @@ const createHeaderSlideStyles = createUseStyles(() => ({
         stroke: color,
     }),
 
-    input: ({ color }) => ({
+    input: {
+        position: 'relative',
+    },
+
+    inputReal: ({ color }) => ({
         borderBottom: '2px solid white',
         width: 220,
         color: color,
@@ -132,7 +137,7 @@ const createHeaderSlideStyles = createUseStyles(() => ({
 
     inputMsg: {
         bottom: -30,
-        left: 57,
+        left: 0,
         position: 'absolute',
         fontSize: 12,
         textTransform: 'none',
@@ -164,27 +169,38 @@ export const HeaderSlide = ({ withArrows = true, categories, initialCurrentItem,
     const [inputValue, setInputValue] = React.useState('');
     const classes = createHeaderSlideStyles({ background: theme.background, color: theme.color });
     const items = categories && categories.map(obj => obj['name']);
-    console.log('initialCurrentItem', initialCurrentItem);
+
+    const clearAllHandlers = () => {
+        setMenuOpened(false);
+        setInputValue('');
+        setInputVisible(false);
+    }
 
     const onLeftClick = () => {
         if (initialCurrentItem === 0) {
             onMenuClick(categories.length - 1);
+            history.push(categories[categories.length - 1].custom_url);
         } else {
-            const newCurrentItem = --initialCurrentItem;
-            onMenuClick(newCurrentItem);
+            onMenuClick(--initialCurrentItem);
+            history.push(categories[initialCurrentItem].custom_url);
         }
     }
 
     const onRightClick = () => {
         if (initialCurrentItem === categories.length - 1) {
             onMenuClick(0);
+            history.push(categories[0].custom_url);
         } else {
-            const newCurrentItem = ++initialCurrentItem;
-            onMenuClick(newCurrentItem);
+            onMenuClick(++initialCurrentItem);
+            history.push(categories[initialCurrentItem].custom_url);
         }
     }
 
     const handleChangeInputValue = (event) => setInputValue(event.target.value);
+
+    React.useEffect(() => {
+        history.push(categories[initialCurrentItem].custom_url);
+    }, [initialCurrentItem]);
 
     return (
         <div className={classNames(classes.header, menuOpened && classes.headerWithMenu)}>
@@ -192,10 +208,7 @@ export const HeaderSlide = ({ withArrows = true, categories, initialCurrentItem,
                 {!menuOpened && withArrows && (
                     <span
                         className={classes.arrow}
-                        onClick={() => {
-                            onLeftClick();
-                            history.push(categories[initialCurrentItem].custom_url);
-                        }}
+                        onClick={onLeftClick}
                     >
                         {"<"}
                     </span>
@@ -206,10 +219,7 @@ export const HeaderSlide = ({ withArrows = true, categories, initialCurrentItem,
                 {!menuOpened && withArrows && (
                     <span
                         className={classes.arrow}
-                        onClick={() => {
-                            onRightClick();
-                            history.push(categories[initialCurrentItem].custom_url);
-                        }}
+                        onClick={onRightClick}
                     >
                         {">"}
                     </span>
@@ -218,7 +228,7 @@ export const HeaderSlide = ({ withArrows = true, categories, initialCurrentItem,
                     ? (
                         <CrossIcon
                             className={classes.menuHandler}
-                            onClick={() => setMenuOpened(false)}
+                            onClick={clearAllHandlers}
                         />
                     ) : (
                         <BurgerIcon
@@ -242,22 +252,28 @@ export const HeaderSlide = ({ withArrows = true, categories, initialCurrentItem,
 
             {menuOpened && (
                 <div className={classes.burgerMenu}>
-                    {location.pathname === createAboutUrl()
+                    {location.pathname === basename + createAboutUrl()
                         ? (
-                            <Link
+                            <div
                                 className={classes.item}
-                                to={createHomeUrl()}
-                                target="blanc">
+                                onClick={() => {
+                                    history.push(createHomeUrl());
+                                    clearAllHandlers();
+                                }}
+                            >
                                 {'Main'}
-                            </Link>
+                            </div>
                         )
                         : (
-                            <Link
+                            <div
                                 className={classes.item}
-                                to={createAboutUrl()}
-                                target="blanc">
+                                onClick={() => {
+                                    history.push(createAboutUrl());
+                                    clearAllHandlers();
+                                }}
+                            >
                                 {'About'}
-                            </Link>
+                            </div>
                         )
                     }
                     <a
@@ -287,27 +303,29 @@ export const HeaderSlide = ({ withArrows = true, categories, initialCurrentItem,
                             url={mailchimpUrl}
                             render={({ subscribe, status, message }) => (
                                 <div className={classes.inputWrapper}>
-                                    <input
-                                        maxLength="40"
-                                        placeholder={'Your@e.mail'}
-                                        className={classes.input}
-                                        type="text"
-                                        value={inputValue}
-                                        onChange={handleChangeInputValue}
-                                    />
+                                    <div className={classes.input}>
+                                        <input
+                                            maxLength="40"
+                                            placeholder={'Your@e.mail'}
+                                            className={classes.inputReal}
+                                            type="text"
+                                            value={inputValue}
+                                            onChange={handleChangeInputValue}
+                                        />
+                                        {status === "sending" && <div className={classes.loadingMsg}>{'Sending...'}</div>}
+                                        {status === "error" && (
+                                            message.includes("already subscribed")
+                                                ? <div className={classes.errorMsg}>{'You are already subscribed!'}</div>
+                                                : <div className={classes.errorMsg}>{'Error'}</div>
+                                        )}
+                                        {status === "success" && <div className={classes.successMsg}>{'You’ve been sent a confirmation letter'}</div>}
+                                    </div>
                                     <div
                                         className={classNames(classes.submitButton, !inputValue || inputValue.indexOf("@") === -1 ? classes.disabledButton : classes.activeButton)}
                                         onClick={() => subscribe({ EMAIL: inputValue })}
                                     >
                                         {'>'}
                                     </div>
-                                    {status === "sending" && <div className={classes.loadingMsg}>{'Sending...'}</div>}
-                                    {status === "error" && (
-                                        message.includes("already subscribed")
-                                            ? <div className={classes.errorMsg}>{'You are already subscribed!'}</div>
-                                            : <div className={classes.errorMsg}>{'Error'}</div>
-                                    )}
-                                    {status === "success" && <div className={classes.successMsg}>{'You’ve been sent a confirmation letter'}</div>}
                                 </div>
                             )}
                         />
@@ -315,9 +333,26 @@ export const HeaderSlide = ({ withArrows = true, categories, initialCurrentItem,
 
                     {!inputVisible && (
                         <div className={classes.socialLinks}>
-                            <a className={classes.item} href="/" target="blanc">Fb</a>
-                            <a className={classes.item} href="/" target="blanc">In</a>
-                            <a className={classes.item} href="/" target="blanc">Vk</a>
+                            <a
+                                className={classes.item}
+                                href="https://www.facebook.com/glazok.tv"
+                                target="blanc"
+                            >
+                                {'Fb'}
+                            </a>
+                            <a
+                                className={classes.item}
+                                href="https://www.instagram.com/glazok.me"
+                                target="blanc">
+                                {'In'}
+                            </a>
+                            <a
+                                className={classes.item}
+                                href="https://www.youtube.com/channel/UClbQ_fo9S2UrHKkGuqpShBw"
+                                target="blanc"
+                            >
+                                {'Yt'}
+                            </a>
                         </div>
                     )}
                 </div>

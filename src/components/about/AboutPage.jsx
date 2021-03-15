@@ -1,8 +1,6 @@
 import React from 'react';
 import { createUseStyles } from 'react-jss';
 import { ThemeContext } from '../../App';
-import { Footer } from '../footer/Footer';
-import { HeaderSlide } from '../header/HeaderSlide';
 import { themes } from '../../App';
 
 const createAboutPageStyles = createUseStyles(() => ({
@@ -26,6 +24,7 @@ const createAboutPageStyles = createUseStyles(() => ({
     width: 50,
     height: 50,
     marginRight: 20,
+    flexShrink: 0,
   },
 
   content: {
@@ -42,6 +41,7 @@ const createAboutPageStyles = createUseStyles(() => ({
   [`@media (max-width: ${global.maxWidth}px)`]: {
     aboutPage: () => ({
       flexDirection: 'column',
+      overflow: 'scroll',
     }),
 
     content: {
@@ -67,14 +67,7 @@ const debounce = (fn, ms) => {
 }
 
 export const AboutPage = () => {
-  const [winWidth, setWinWidth] = React.useState(window.innerWidth);
   const { theme, setTheme } = React.useContext(ThemeContext);
-
-  React.useEffect(() => {
-    const debouncedHandleResize = debounce(() => setWinWidth(window.innerWidth), 100);
-    window.addEventListener('resize', debouncedHandleResize);
-    return () => window.removeEventListener('resize', debouncedHandleResize);
-  })
 
   React.useEffect(() => {
     setTheme(themes.black);
@@ -84,9 +77,6 @@ export const AboutPage = () => {
 
   return (
     <div className={classes.aboutPage}>
-      {winWidth <= global.maxWidth && (
-        <HeaderSlide withArrows={false} />
-      )}
       <div className={classes.content}>
         <div className={classes.column}>
           {`ГЛАЗОК (༗) — это нестабильная видеоплатформа, медиа-мираж, эффект преломления визуальных потоков в пространстве институциональных и технологических связей разной плотности. Мы показываем фильмы, лекции, стримы и все, что посчитаем любопытным.`}
@@ -163,9 +153,6 @@ export const AboutPage = () => {
           </div>
         </div>
       </div>
-      {winWidth > global.maxWidth && (
-        <Footer />
-      )}
     </div>
   );
 };
