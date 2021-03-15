@@ -15,7 +15,7 @@ if [ "$target" = "production" ]; then
   ssh deploy@front.glazok.tv 'cd /home/deploy/glazok-frontend && git pull && yarn && yarn build'
 elif [ "$target" = "staging" ]; then
   echo deploying to staging...
-  ssh deploy@front.glazok.tv 'cd /home/deploy/glazok-frontend-staging && git pull && yarn && yarn build'
+  ssh deploy@staging.front.glazok.tv 'cd /home/deploy/glazok-frontend-staging && git pull && yarn && yarn build'
 else
   echo "unknown target: $target"
 fi
