@@ -83,12 +83,13 @@ const getCurrentItem = (items, winCenter) => {
 export const HeaderScroll = ({ categories, initialCurrentItem, onMenuClick }) => {
   const history = useHistory();
   const { theme } = React.useContext(ThemeContext);
-  const [menuLeftIndent, setMenuLeftIndent] = React.useState();
-  const [menuRightIndent, setMenuRightIndent] = React.useState();
+  const [menuLeftIndent, setMenuLeftIndent] = React.useState(0);
+  const [menuRightIndent, setMenuRightIndent] = React.useState(0);
   const menuHtmlEls = React.useRef({});
   const menuWrapperHtmlEl = React.useRef();
   const [currentItem, setCurrentItem] = React.useState(initialCurrentItem);
   const [winWidth, setWinWidth] = React.useState(window.innerWidth);
+  console.log('menuLeftIndent', menuLeftIndent);
 
   const onMouseWheel = (e) => {
     scrollHorizontally(e, menuWrapperHtmlEl.current);
@@ -102,23 +103,23 @@ export const HeaderScroll = ({ categories, initialCurrentItem, onMenuClick }) =>
   React.useEffect(() => {
     const debouncedHandleResize = debounce(() => setWinWidth(window.innerWidth), 300);
     window.addEventListener('resize', debouncedHandleResize);
-    return () => window.removeEventListener('resize', debouncedHandleResize);
-  })
-
-  React.useEffect(() => {
     window.addEventListener('mousewheel', onMouseWheel, false);
     return () => {
+      window.removeEventListener('resize', debouncedHandleResize);
       window.removeEventListener('mousewheel', onMouseWheel);
     }
   })
 
   React.useEffect(() => {
-    setMenuLeftIndent(winWidth / 2 - menuHtmlEls.current[0].offsetLeft - menuHtmlEls.current[0].offsetWidth / 2);
-    setMenuRightIndent(winWidth / 2 - menuHtmlEls.current[Object.keys(menuHtmlEls.current).length - 1].offsetWidth / 2 - 30);
-  }, [])
+    console.log('menuHtmlEls.current[0].offsetLeft', menuHtmlEls.current[0].offsetLeft);
+    console.log('menuHtmlEls.current[0]', menuHtmlEls.current[0]);
+    console.log(winWidth);
+    setMenuLeftIndent(winWidth / 2 - (menuHtmlEls.current[0].offsetLeft - menuLeftIndent) - menuHtmlEls.current[0].offsetWidth / 2);
+    setMenuRightIndent(winWidth / 2 - menuHtmlEls.current[Object.keys(menuHtmlEls.current).length - 1].offsetWidth / 2 - 30 - menuRightIndent);
+  }, [winWidth])
 
   React.useEffect(() => {
-    if (initialCurrentItem >= 0) {
+    if (initialCurrentItem) {
       menuWrapperHtmlEl.current.scrollLeft = menuHtmlEls.current[initialCurrentItem].offsetLeft - winWidth / 2 + menuHtmlEls.current[initialCurrentItem].offsetWidth / 2;
     }
   }, [initialCurrentItem])
