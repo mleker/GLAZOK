@@ -2,6 +2,7 @@ import React from 'react';
 import { createUseStyles } from 'react-jss';
 import { ThemeContext, themes } from '../../App';
 import { apiUrl } from '../../utils/Api';
+import { debounce } from '../../utils/UtilFuncs';
 import classNames from 'classnames';
 import { Error } from '../error/Error';
 
@@ -10,6 +11,13 @@ const createCategoryStyles = createUseStyles(() => ({
   '@keyframes fadeIn': {
     from: { opacity: 0 },
     to: { opacity: 1 },
+  },
+
+  title: {
+    textAlign: 'center',
+    zIndex: 1,
+    fontSize: 40,
+    textTransform: 'uppercase',
   },
 
   playModeBlock: ({ coverImage, background }) => ({
@@ -113,7 +121,7 @@ const createCategoryStyles = createUseStyles(() => ({
     wordWrap: 'break-word',
   },
 
-  title: {
+  postTitle: {
     textTransform: 'uppercase',
     paddingBottom: 5,
   },
@@ -224,22 +232,10 @@ const createCategoryStyles = createUseStyles(() => ({
   },
 }));
 
-const debounce = (fn, ms) => {
-  let timer;
-  return () => {
-    clearTimeout(timer)
-    timer = setTimeout(() => {
-      timer = null
-      fn.apply(this, arguments)
-    }, ms)
-  };
-}
-
-export const Category = React.forwardRef(({ post, readMode, onSetReadMode, onSetPlayMode, className }) => {
+export const Category = React.forwardRef(({ category, post, readMode, onSetReadMode, onSetPlayMode }) => {
   const { theme, setTheme } = React.useContext(ThemeContext);
   const [winWidth, setWinWidth] = React.useState(window.innerWidth);
   const [embedShowed, setEmbedShowed] = React.useState(false);
-  console.log(apiUrl);
 
   React.useEffect(() => {
     const debouncedHandleResize = debounce(() => setWinWidth(window.innerWidth), 300);
@@ -258,113 +254,122 @@ export const Category = React.forwardRef(({ post, readMode, onSetReadMode, onSet
   const coverImage = post && post.cover;
   const classes = createCategoryStyles({ coverImage: apiUrl + coverImage, background: theme.background, color: theme.color });
   const embed_url = post && post.embed_url;
+  const external_url = post && post.external_url;
 
   if (!post) {
     return <Error />
   }
 
   return (
-    readMode
-      ? (
-        <div className={classes.readModeBlock}>
-          <div className={classes.twoColumns}>
-            <div className={classes.firstColumn}>
-              <div className={classes.title}>
-                {post.title}
-              </div>
-              {winWidth > global.maxWidth ? post.description : post.short_description}
-            </div>
-            <div className={classes.secondColumn}>
-              <div className={classes.title}>
-                {post.title}
-              </div>
-              {winWidth > global.maxWidth ? post.description_en : post.short_description_en}
-            </div>
-          </div>
-          <div className={classes.textFrameWrapper}>
-            <div className={classes.textFrame}>
-              <div className={classes.textFrameFirstColumn}>
-                <div className={classes.textFrameTitle}>
+    <>
+      {winWidth <= global.maxWidth && (
+        <div className={classes.title}>
+          {category.name}
+        </div>
+      )}
+      {readMode
+        ? (
+          <div className={classes.readModeBlock}>
+            <div className={classes.twoColumns}>
+              <div className={classes.firstColumn}>
+                <div className={classes.postTitle}>
                   {post.title}
                 </div>
                 {winWidth > global.maxWidth ? post.description : post.short_description}
               </div>
-              <div className={classes.textFrameSecondColumn}>
-                <div className={classes.textFrameTitle}>
+              <div className={classes.secondColumn}>
+                <div className={classes.postTitle}>
                   {post.title}
                 </div>
                 {winWidth > global.maxWidth ? post.description_en : post.short_description_en}
               </div>
-              {true && (
-                <a
-                  className={classes.frameCenterLink}
-                  href={'/'}
-                  target={'blanc'}
-                >
-                  {'READ'}
-                </a>
-              )}
             </div>
-            <div
-              className={classNames(classes.rightButton, classes.playButton)}
-              onClick={onSetPlayMode}
-            >
-              {'PLAY'}
-            </div>
-          </div>
-        </div>
-      ) : (
-        <div className={classes.playModeBlock}>
-          <div className={classes.frameWrapper}>
-            <div className={classNames(classes.frame, !embedShowed && classes.frameNoEmbed)}>
-              {embed_url.includes('youtube.com/embed') || embed_url.includes('player.vimeo.com')
-                ? (
-                  <>
-                    {embedShowed
-                      ? (
-                        <iframe
-                          className={classes.embed}
-                          src={`${post.embed_url}?autoplay=1`}
-                          frameBorder='0'
-                          allow={embed_url.includes('player.vimeo.com')
-                            ? "autoplay; fullscreen; picture-in-picture"
-                            : "accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                          }
-                          allowFullScreen='1'
-                          webkitallowfullscreen='1'
-                          mozallowfullscreen='1'
-                        />
-                      )
-                      : (
-                        <div
-                          className={classes.frameCenterLink}
-                          onClick={setEmbedShowed}
-                        >
-                          {'PLAY'}
-                        </div>
-                      )
-                    }
-                  </>
-                )
-                : (
+            <div className={classes.textFrameWrapper}>
+              <div className={classes.textFrame}>
+                <div className={classes.textFrameFirstColumn}>
+                  <div className={classes.textFrameTitle}>
+                    {post.title}
+                  </div>
+                  {winWidth > global.maxWidth ? post.description : post.short_description}
+                </div>
+                <div className={classes.textFrameSecondColumn}>
+                  <div className={classes.textFrameTitle}>
+                    {post.title}
+                  </div>
+                  {winWidth > global.maxWidth ? post.description_en : post.short_description_en}
+                </div>
+                {external_url && (
                   <a
                     className={classes.frameCenterLink}
-                    href={post.embed_url}
-                    target={'blanc'}
+                    href={external_url}
+                    target='blanc'
                   >
-                    {'PLAY'}
+                    {'READ'}
                   </a>
-                )
-              }
-            </div>
-            <div
-              className={classNames(classes.rightButton, classes.readButton)}
-              onClick={onSetReadMode}
-            >
-              {'READ'}
+                )}
+              </div>
+              <div
+                className={classNames(classes.rightButton, classes.playButton)}
+                onClick={onSetPlayMode}
+              >
+                {'PLAY'}
+              </div>
             </div>
           </div>
-        </div>
-      )
+        ) : (
+          <div className={classes.playModeBlock}>
+            <div className={classes.frameWrapper}>
+              <div className={classNames(classes.frame, !embedShowed && classes.frameNoEmbed)}>
+                {embed_url.includes('youtube.com/embed') || embed_url.includes('player.vimeo.com')
+                  ? (
+                    <>
+                      {embedShowed
+                        ? (
+                          <iframe
+                            className={classes.embed}
+                            src={`${post.embed_url}?autoplay=1`}
+                            frameBorder='0'
+                            allow={embed_url.includes('player.vimeo.com')
+                              ? "autoplay; fullscreen; picture-in-picture"
+                              : "accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                            }
+                            allowFullScreen='1'
+                            webkitallowfullscreen='1'
+                            mozallowfullscreen='1'
+                          />
+                        )
+                        : (
+                          <div
+                            className={classes.frameCenterLink}
+                            onClick={setEmbedShowed}
+                          >
+                            {'PLAY'}
+                          </div>
+                        )
+                      }
+                    </>
+                  )
+                  : (
+                    <a
+                      className={classes.frameCenterLink}
+                      href={post.embed_url}
+                      target={'blanc'}
+                    >
+                      {'PLAY'}
+                    </a>
+                  )
+                }
+              </div>
+              <div
+                className={classNames(classes.rightButton, classes.readButton)}
+                onClick={onSetReadMode}
+              >
+                {'READ'}
+              </div>
+            </div>
+          </div>
+        )
+      }
+    </>
   );
 });

@@ -2,10 +2,11 @@ import React from 'react';
 import { createUseStyles } from 'react-jss';
 import { Link } from '../link/Link';
 import { createAboutUrl, createHomeUrl } from '../../utils/AppUrlCreators';
-import { ThemeContext, mailchimpUrl, basename } from '../../App';
+import { ThemeContext, mailchimpUrl } from '../../App';
 import { useLocation } from 'react-router-dom';
 import MailchimpSubscribe from 'react-mailchimp-subscribe';
 import classNames from 'classnames';
+import { debounce } from '../../utils/UtilFuncs';
 
 const createFooterStyles = createUseStyles(() => ({
   footer: ({ color }) => ({
@@ -42,7 +43,7 @@ const createFooterStyles = createUseStyles(() => ({
 
   input: ({ color }) => ({
     paddingLeft: 15,
-    borderBottom: '2px solid white',
+    borderBottom: `2px solid ${color}`,
     marginRight: 20,
     width: 200,
     color: color,
@@ -85,33 +86,27 @@ const createFooterStyles = createUseStyles(() => ({
 
 }));
 
-const debounce = (fn, ms) => {
-  let timer;
-  return () => {
-    clearTimeout(timer)
-    timer = setTimeout(() => {
-      timer = null
-      fn.apply(this, arguments)
-    }, ms)
-  };
-}
-
 export const Footer = () => {
   const { theme } = React.useContext(ThemeContext);
   const [winWidth, setWinWidth] = React.useState(window.innerWidth);
   const [inputValue, setInputValue] = React.useState('');
   const [inputVisible, setInputVisible] = React.useState(false);
+  const inputWrapperHtmlEl = React.useRef();
   const classes = createFooterStyles({ color: theme.color, background: theme.background });
   let location = useLocation();
 
   React.useEffect(() => {
     const debouncedHandleResize = debounce(() => setWinWidth(window.innerWidth), 300);
     window.addEventListener('resize', debouncedHandleResize);
-    return () => window.removeEventListener('resize', debouncedHandleResize);
+    window.addEventListener('click', handleClick);
+    return () => {
+      window.removeEventListener('resize', debouncedHandleResize);
+      window.removeEventListener('click', handleClick);
+    }
   })
 
   const handleChangeInputValue = (event) => setInputValue(event.target.value);
-
+  const handleClick = (event) => inputVisible && !inputWrapperHtmlEl.current.contains(event.target) && setInputVisible(false);
 
   return (
     winWidth > global.maxWidth && (
@@ -151,7 +146,10 @@ export const Footer = () => {
             <MailchimpSubscribe
               url={mailchimpUrl}
               render={({ subscribe, status, message }) => (
-                <div className={classes.inputWrapper}>
+                <div
+                  ref={inputWrapperHtmlEl}
+                  className={classes.inputWrapper}
+                >
                   <input
                     maxLength="40"
                     placeholder={'Your@e.mail'}
@@ -162,7 +160,9 @@ export const Footer = () => {
                   />
                   <div
                     className={classNames(classes.submitButton, !inputValue || inputValue.indexOf("@") === -1 ? classes.disabledButton : classes.activeButton)}
-                    onClick={() => subscribe({ EMAIL: inputValue })}
+                    onClick={() => {
+                      inputValue && inputValue.indexOf("@") !== -1 && subscribe({ EMAIL: inputValue })
+                    }}
                   >
                     {'>'}
                   </div>

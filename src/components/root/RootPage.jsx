@@ -66,13 +66,10 @@ export const RootPage = ({ categories, posts }) => {
     React.useEffect(() => {
         const debouncedHandleResize = debounce(() => setWinWidth(window.innerWidth), 300);
         window.addEventListener('resize', debouncedHandleResize);
-        return () => window.removeEventListener('resize', debouncedHandleResize);
-    })
-
-    React.useEffect(() => {
         window.addEventListener('touchstart', handleTouchStart, false);
         window.addEventListener('touchmove', handleTouchMove, false);
         return () => {
+            window.removeEventListener('resize', debouncedHandleResize);
             window.removeEventListener('touchstart', handleTouchStart);
             window.removeEventListener('touchmove', handleTouchMove);
         }

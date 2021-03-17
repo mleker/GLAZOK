@@ -2,6 +2,8 @@ import React from 'react';
 import { createUseStyles } from 'react-jss';
 import { useHistory } from 'react-router-dom';
 import { ThemeContext } from '../../App';
+import { replaceSpacesWithUnderscore } from '../../utils/UtilFuncs';
+import { debounce } from '../../utils/UtilFuncs';
 
 const createHeaderScrollStyles = createUseStyles(() => ({
 
@@ -78,8 +80,6 @@ const getCurrentItem = (items, winCenter) => {
   }
 }
 
-const replaceSpacesWithUnderscore = (text) => text.replace(/ /g, "_");
-
 export const HeaderScroll = ({ categories, initialCurrentItem, onMenuClick }) => {
   const history = useHistory();
   const { theme } = React.useContext(ThemeContext);
@@ -88,7 +88,7 @@ export const HeaderScroll = ({ categories, initialCurrentItem, onMenuClick }) =>
   const menuHtmlEls = React.useRef({});
   const menuWrapperHtmlEl = React.useRef();
   const [currentItem, setCurrentItem] = React.useState(initialCurrentItem);
-  const winWidth = window.innerWidth;
+  const [winWidth, setWinWidth] = React.useState(window.innerWidth);
 
   const onMouseWheel = (e) => {
     scrollHorizontally(e, menuWrapperHtmlEl.current);
@@ -98,6 +98,12 @@ export const HeaderScroll = ({ categories, initialCurrentItem, onMenuClick }) =>
       history.push(categories[newCurrentItem].custom_url);
     }
   }
+
+  React.useEffect(() => {
+    const debouncedHandleResize = debounce(() => setWinWidth(window.innerWidth), 300);
+    window.addEventListener('resize', debouncedHandleResize);
+    return () => window.removeEventListener('resize', debouncedHandleResize);
+  })
 
   React.useEffect(() => {
     window.addEventListener('mousewheel', onMouseWheel, false);

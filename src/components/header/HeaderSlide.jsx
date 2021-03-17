@@ -2,7 +2,7 @@ import React from 'react';
 import { createUseStyles } from 'react-jss';
 import { createHomeUrl, createAboutUrl } from '../../utils/AppUrlCreators';
 import { useHistory } from 'react-router-dom';
-import { ThemeContext, mailchimpUrl, basename } from '../../App';
+import { ThemeContext, mailchimpUrl } from '../../App';
 import { BurgerIcon } from './images/BurgerIcon';
 import { CrossIcon } from './images/CrossIcon';
 import classNames from 'classnames';
@@ -14,7 +14,6 @@ const createHeaderSlideStyles = createUseStyles(() => ({
         zIndex: 2,
         fontSize: 40,
         position: 'relative',
-        paddingBottom: 10,
         flexShrink: 0,
         textTransform: 'uppercase',
         whiteSpace: 'nowrap',
@@ -114,7 +113,7 @@ const createHeaderSlideStyles = createUseStyles(() => ({
     },
 
     inputReal: ({ color }) => ({
-        borderBottom: '2px solid white',
+        borderBottom: `2px solid ${color}`,
         width: 220,
         color: color,
     }),
@@ -159,8 +158,6 @@ const createHeaderSlideStyles = createUseStyles(() => ({
     },
 }));
 
-const replaceSpacesWithUnderscore = (text) => text.replace(/ /g, "_");
-
 export const HeaderSlide = ({ withArrows = true, categories, initialCurrentItem, onMenuClick }) => {
     const history = useHistory();
     const { theme } = React.useContext(ThemeContext);
@@ -168,7 +165,6 @@ export const HeaderSlide = ({ withArrows = true, categories, initialCurrentItem,
     const [inputVisible, setInputVisible] = React.useState(false);
     const [inputValue, setInputValue] = React.useState('');
     const classes = createHeaderSlideStyles({ background: theme.background, color: theme.color });
-    const items = categories && categories.map(obj => obj['name']);
 
     const clearAllHandlers = () => {
         setMenuOpened(false);
@@ -238,21 +234,9 @@ export const HeaderSlide = ({ withArrows = true, categories, initialCurrentItem,
                     )}
             </div>
 
-            {withArrows
-                ? (
-                    <div className={classes.menuItem}>
-                        {items[initialCurrentItem] && replaceSpacesWithUnderscore(items[initialCurrentItem])}
-                    </div>
-                ) : (
-                    <div className={classes.menuItem}>
-                        {'ABOUT'}
-                    </div>
-                )
-            }
-
             {menuOpened && (
                 <div className={classes.burgerMenu}>
-                    {location.pathname === basename + createAboutUrl()
+                    {location.pathname === createAboutUrl()
                         ? (
                             <div
                                 className={classes.item}
@@ -322,7 +306,9 @@ export const HeaderSlide = ({ withArrows = true, categories, initialCurrentItem,
                                     </div>
                                     <div
                                         className={classNames(classes.submitButton, !inputValue || inputValue.indexOf("@") === -1 ? classes.disabledButton : classes.activeButton)}
-                                        onClick={() => subscribe({ EMAIL: inputValue })}
+                                        onClick={() => {
+                                            inputValue && inputValue.indexOf("@") !== -1 && subscribe({ EMAIL: inputValue })
+                                        }}
                                     >
                                         {'>'}
                                     </div>

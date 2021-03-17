@@ -8,3 +8,5 @@ export const debounce = (fn, ms) => {
         }, ms)
     };
 }
+
+export const replaceSpacesWithUnderscore = (text) => text.replace(/ /g, "_");

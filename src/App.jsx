@@ -89,18 +89,29 @@ export const themes = {
   }
 };
 
-export const basename = process.env.NODE_ENV === 'production' ? '/glazok' : '/';
-
 export const ThemeContext = React.createContext(themes.black);
 
 export const mailchimpUrl = '//gmail.us10.list-manage.com/subscribe/post?u=d85f58b233c0f486796471e30&id=6066ed83ae';
 
 export const App = () => {
   const [theme, setTheme] = React.useState(themes.black);
-  const [winWidth, setWinWidth] = React.useState(window.innerWidth);
   const [categories, setCategories] = React.useState(null);
   const [posts, setPosts] = React.useState(null);
   const [error, setError] = React.useState();
+  const [, setWinWidth] = React.useState(window.innerWidth);
+  
+  let nulls = [];
+  let sortedCategories = categories && categories.slice();
+  sortedCategories && sortedCategories.map(
+    (a, i) => {
+      if (a['priority'] === null) {
+        nulls.push(sortedCategories.splice(i, 1)[0]);
+      }
+    }
+  );
+
+  sortedCategories && sortedCategories.sort((a, b) => a['priority'] > b['priority'] ? 1 : -1);
+  sortedCategories = sortedCategories && nulls && sortedCategories.concat(nulls);
 
   React.useEffect(() => {
     const debouncedHandleResize = debounce(() => setWinWidth(window.innerWidth), 300);
@@ -132,13 +143,13 @@ export const App = () => {
 
   return (
     <ThemeContext.Provider value={{ theme, setTheme }}>
-      {categories && posts
+      {sortedCategories && posts
         ? (
           <Switch>
             <Route path={createHomeUrl()}>
-              <RootPage categories={categories} posts={posts} />
+              <RootPage categories={sortedCategories} posts={posts} />
             </Route>
-            <Redirect from={createHomeUrl()} to={categories[0].custom_url} push={true} />
+            <Redirect from={createHomeUrl()} to={sortedCategories[0].custom_url} push={true} />
             <Route component={Error} />
           </Switch>
         ) : (
