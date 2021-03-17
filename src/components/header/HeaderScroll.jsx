@@ -89,7 +89,6 @@ export const HeaderScroll = ({ categories, initialCurrentItem, onMenuClick }) =>
   const menuWrapperHtmlEl = React.useRef();
   const [currentItem, setCurrentItem] = React.useState(initialCurrentItem);
   const [winWidth, setWinWidth] = React.useState(window.innerWidth);
-  console.log('menuLeftIndent', menuLeftIndent);
 
   const onMouseWheel = (e) => {
     scrollHorizontally(e, menuWrapperHtmlEl.current);
@@ -111,9 +110,6 @@ export const HeaderScroll = ({ categories, initialCurrentItem, onMenuClick }) =>
   })
 
   React.useEffect(() => {
-    console.log('menuHtmlEls.current[0].offsetLeft', menuHtmlEls.current[0].offsetLeft);
-    console.log('menuHtmlEls.current[0]', menuHtmlEls.current[0]);
-    console.log(winWidth);
     setMenuLeftIndent(winWidth / 2 - (menuHtmlEls.current[0].offsetLeft - menuLeftIndent) - menuHtmlEls.current[0].offsetWidth / 2);
     setMenuRightIndent(winWidth / 2 - menuHtmlEls.current[Object.keys(menuHtmlEls.current).length - 1].offsetWidth / 2 - 30 - menuRightIndent);
   }, [winWidth])
