@@ -165,7 +165,7 @@ export const RootPage = ({ categories, posts }) => {
                                 />
                             </Route>
                         )}
-                        <Redirect exact from={createHomeUrl()} to={categories[0].custom_url} />
+                        {/* <Redirect exact from={createHomeUrl()} to={categories[0].custom_url} /> */}
                     </Switch>
                     <Footer />
                 </div>
