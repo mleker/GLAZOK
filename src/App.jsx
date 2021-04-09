@@ -33,9 +33,9 @@ jss.createStyleSheet({
     fontFamily: 'Panama',
     fontWeight: 'normal',
     fontStyle: 'normal',
-    src: `url(${PanamaOtf}) format("otf")`,
+    src: `url(${PanamaWoff}) format("woff")`,
     fallbacks: [
-      { src: `url(${PanamaWoff}) format("woff")` },
+      { src: `url(${PanamaOtf}) format("otf")` },
       { src: `url(${PanamaTtf}) format("truetype")` },
       { src: `url(${PanamaWoff2}) format("woff2")` },
       { src: `url(${PanamaEot}) format("embedded-opentype")` },
