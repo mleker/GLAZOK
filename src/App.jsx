@@ -151,9 +151,11 @@ export const App = () => {
   return (
     <ThemeContext.Provider value={{ theme, setTheme }}>
       <Helmet>
+        <meta property="og:type" content="site" />
         <meta property="og:title" content="glazok.tv" />
         <meta property="og:description" content="GLAZOK (༗) is an unstable video platform for films, lectures, and live-feeds." />
         <meta property="og:image" content="https://glazok.tv/share-fb.jpg" />
+        <meta name="twitter:card" content="summary" />
         <meta name="twitter:title" content="glazok.tv" />
         <meta name="twitter:description" content="GLAZOK (༗) is an unstable video platform for films, lectures, and live-feeds." />
         <meta name="twitter:image" content="https://glazok.tv/share-fb.jpg" />

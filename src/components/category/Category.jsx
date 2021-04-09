@@ -227,78 +227,78 @@ const createCategoryStyles = createUseStyles(() => ({
 
   [`@media (max-width: ${global.maxWidth}px)`]: {
 
-  playModeBlock: () => ({
-    position: 'absolute',
-    left: 0,
-    right: 0,
-  }),
+    playModeBlock: () => ({
+      position: 'absolute',
+      left: 0,
+      right: 0,
+    }),
 
-  twoColumns: () => ({
-    top: 140,
-  }),
+    twoColumns: () => ({
+      top: 140,
+    }),
 
-  frameCenterLink: () => ({
-    fontSize: 40,
-    '&:hover, &:active': {
-      opacity: 1,
+    frameCenterLink: () => ({
+      fontSize: 40,
+      '&:hover, &:active': {
+        opacity: 1,
+      },
+    }),
+
+    rightButton: () => ({
+      fontSize: 40,
+      transform: 'translateY(calc(100% - 2px))',
+      bottom: 0,
+      top: 'auto',
+      padding: '20px 25px 15px 25px',
+      width: 138,
+    }),
+
+    playButton: {
+      '&:hover, &:active': {
+        color: 'inherit',
+      },
     },
-  }),
 
-  rightButton: () => ({
-    fontSize: 40,
-    transform: 'translateY(calc(100% - 2px))',
-    bottom: 0,
-    top: 'auto',
-    padding: '20px 25px 15px 25px',
-    width: 138,
-  }),
-
-  playButton: {
-    '&:hover, &:active': {
-      color: 'inherit',
+    readButton: {
+      '&:hover, &:active': {
+        color: 'inherit',
+      },
     },
-  },
 
-  readButton: {
-    '&:hover, &:active': {
-      color: 'inherit',
+    firstColumn: {
+      padding: 40,
     },
-  },
 
-  firstColumn: {
-    padding: 40,
-  },
+    secondColumn: {
+      padding: 40,
+    },
 
-  secondColumn: {
-    padding: 40,
-  },
+    frameWrapper: {
+      left: 0,
+      right: 0,
+      top: '53%',
+      width: '100%',
+      transform: 'translateY(-50%) translateX(0)',
+    },
 
-  frameWrapper: {
-    left: 0,
-    right: 0,
-    top: '53%',
-    width: '100%',
-    transform: 'translateY(-50%) translateX(0)',
-  },
+    textFrameWrapper: {
+      left: 0,
+      right: 0,
+      width: '100%',
+      transform: 'translateY(-50%) translateX(0)',
+    },
 
-  textFrameWrapper: {
-    left: 0,
-    right: 0,
-    width: '100%',
-    transform: 'translateY(-50%) translateX(0)',
-  },
+    textFrameFirstColumn: {
+      padding: '10px 40px 10px 15px',
+      fontSize: 16,
+    },
 
-  textFrameFirstColumn: {
-    padding: '10px 40px 10px 15px',
-    fontSize: 16,
-  },
+    textFrameSecondColumn: {
+      padding: '10px 10px 10px 40px',
+      fontSize: 16,
+    },
 
-  textFrameSecondColumn: {
-    padding: '10px 10px 10px 40px',
-    fontSize: 16,
   },
-
-},
 }));
 
 export const Category = ({ category, post, readMode, onSetReadMode, onSetPlayMode }) => {
@@ -335,9 +335,11 @@ export const Category = ({ category, post, readMode, onSetReadMode, onSetPlayMod
   return (
     <>
       <Helmet>
+        <meta property="og:type" content="site" />
         <meta property="og:title" content={title} />
         <meta property="og:description" content={description} />
         <meta property="og:image" content={shareImage} />
+        <meta name="twitter:card" content="summary" />
         <meta name="twitter:title" content={title} />
         <meta name="twitter:description" content={description} />
         <meta name="twitter:image" content={shareImage} />
