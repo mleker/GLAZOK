@@ -2,7 +2,7 @@ import React from 'react';
 import { jss } from 'react-jss';
 import { RootPage } from './components/root/RootPage';
 import { getCategories, getPosts } from './utils/Api';
-import 'normalize.css';
+// import 'normalize.css';
 import { createHomeUrl } from './utils/AppUrlCreators';
 import PanamaOtf from './fonts/panama.otf';
 import PanamaEot from './fonts/panama.eot';
@@ -169,16 +169,15 @@ export const App = () => {
         <link rel="shortcut icon" href="favicon.ico" />
         <meta property="title" content="glazok.tv" />
         <meta name="description" content="GLAZOK (༗) is an unstable video platform for films, lectures, and live-feeds." />
-        <meta id="category" property="og:type" content="site" />
-        <meta property="og:title" content="title" />
-        <meta property="og:description" content="description" />
-        <meta property="og:image" content="https://admin.glazok.tv/rails/active_storage/disk/eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaDdDRG9JYTJWNVNTSWhOMk54YUhnMmNXazNZWE5rY25Ob05IVnZaMnAxYkdkM1l6RnFhZ1k2QmtWVU9oQmthWE53YjNOcGRHbHZia2tpT1dsdWJHbHVaVHNnWm1sc1pXNWhiV1U5SWpFeU15NXFjR2NpT3lCbWFXeGxibUZ0WlNvOVZWUkdMVGduSnpFeU15NXFjR2NHT3daVU9oRmpiMjUwWlc1MFgzUjVjR1ZKSWc5cGJXRm5aUzlxY0dWbkJqc0dWQT09IiwiZXhwIjoiMjAyMS0wNC0wOVQxOTo1ODoxNS45MTlaIiwicHVyIjoiYmxvYl9rZXkifX0=--8394b121b5480574a89b108fa58d126f384e2208/123.jpg?content_type=image%2Fjpeg&disposition=inline%3B+filename%3D%22123.jpg%22%3B+filename%2A%3DUTF-8%27%27123.jpg" />
-        <meta id="category" name="twitter:card" content="summary" />
-        <meta name="twitter:title" content="title" />
-        <meta name="twitter:description" content="description" />
-        <meta name="twitter:image" content="https://admin.glazok.tv/rails/active_storage/disk/eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaDdDRG9JYTJWNVNTSWhOMk54YUhnMmNXazNZWE5rY25Ob05IVnZaMnAxYkdkM1l6RnFhZ1k2QmtWVU9oQmthWE53YjNOcGRHbHZia2tpT1dsdWJHbHVaVHNnWm1sc1pXNWhiV1U5SWpFeU15NXFjR2NpT3lCbWFXeGxibUZ0WlNvOVZWUkdMVGduSnpFeU15NXFjR2NHT3daVU9oRmpiMjUwWlc1MFgzUjVjR1ZKSWc5cGJXRm5aUzlxY0dWbkJqc0dWQT09IiwiZXhwIjoiMjAyMS0wNC0wOVQxOTo1ODoxNS45MTlaIiwicHVyIjoiYmxvYl9rZXkifX0=--8394b121b5480574a89b108fa58d126f384e2208/123.jpg?content_type=image%2Fjpeg&disposition=inline%3B+filename%3D%22123.jpg%22%3B+filename%2A%3DUTF-8%27%27123.jpg" />
+        <meta property="og:type" content="site" />
+        <meta property="og:title" content="glazok.tv" />
+        <meta property="og:description" content="GLAZOK (༗) is an unstable video platform for films, lectures, and live-feeds." />
+        <meta property="og:image" content="https://glazok.tv/share-fb.jpg" />
+        <meta name="twitter:card" content="summary" />
+        <meta name="twitter:title" content="glazok.tv" />
+        <meta name="twitter:description" content="GLAZOK (༗) is an unstable video platform for films, lectures, and live-feeds." />
+        <meta name="twitter:image" content="https://glazok.tv/share-fb.jpg" />
       </Helmet>
-      <div></div>
       {sortedCategories && posts
         ? (
           <Switch>
