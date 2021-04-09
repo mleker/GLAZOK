@@ -335,11 +335,11 @@ export const Category = ({ category, post, readMode, onSetReadMode, onSetPlayMod
   return (
     <>
       <Helmet>
-        <meta property="og:type" content="site" />
+        <meta id="category" property="og:type" content="site" />
         <meta property="og:title" content={title} />
         <meta property="og:description" content={description} />
         <meta property="og:image" content={shareImage} />
-        <meta name="twitter:card" content="summary" />
+        <meta id="category" name="twitter:card" content="summary" />
         <meta name="twitter:title" content={title} />
         <meta name="twitter:description" content={description} />
         <meta name="twitter:image" content={shareImage} />
