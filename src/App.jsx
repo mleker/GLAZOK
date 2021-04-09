@@ -2,7 +2,6 @@ import React from 'react';
 import { jss } from 'react-jss';
 import { RootPage } from './components/root/RootPage';
 import { getCategories, getPosts } from './utils/Api';
-// import 'normalize.css';
 import { createHomeUrl } from './utils/AppUrlCreators';
 import PanamaOtf from './fonts/panama.otf';
 import PanamaEot from './fonts/panama.eot';
