@@ -3,7 +3,6 @@ import { createUseStyles } from 'react-jss';
 import { useHistory } from 'react-router-dom';
 import { ThemeContext } from '../../App';
 import { replaceSpacesWithUnderscore } from '../../utils/UtilFuncs';
-import { debounce } from '../../utils/UtilFuncs';
 
 const createHeaderScrollStyles = createUseStyles(() => ({
 
@@ -56,12 +55,14 @@ const createHeaderScrollStyles = createUseStyles(() => ({
   },
 
   blinkers: {
-    animation: '$blinker 1s steps(2, jump-none) infinite',
+    animationName: '$blinker',
+    animationDuration: '1s',
+    animationIterationCount: 'infinite',
+    animationTimingFunction: 'steps(2, start)',
   },
 
   '@keyframes blinker': {
-    from: { opacity: 1 },
-    to: { opacity: 0 }
+    to: { visibility: 'hidden' },
   },
 }));
 
@@ -100,11 +101,10 @@ export const HeaderScroll = ({ categories, initialCurrentItem, onMenuClick }) =>
   }
 
   React.useEffect(() => {
-    const debouncedHandleResize = debounce(() => setWinWidth(window.innerWidth), 300);
-    window.addEventListener('resize', debouncedHandleResize);
+    window.addEventListener('resize', () => setWinWidth(window.innerWidth));
     window.addEventListener('mousewheel', onMouseWheel, false);
     return () => {
-      window.removeEventListener('resize', debouncedHandleResize);
+      window.removeEventListener('resize', () => setWinWidth(window.innerWidth));
       window.removeEventListener('mousewheel', onMouseWheel);
     }
   })
@@ -115,9 +115,7 @@ export const HeaderScroll = ({ categories, initialCurrentItem, onMenuClick }) =>
   }, [winWidth])
 
   React.useEffect(() => {
-    if (initialCurrentItem) {
       menuWrapperHtmlEl.current.scrollLeft = menuHtmlEls.current[initialCurrentItem].offsetLeft - winWidth / 2 + menuHtmlEls.current[initialCurrentItem].offsetWidth / 2;
-    }
   }, [initialCurrentItem])
 
   const classes = createHeaderScrollStyles({ menuLeftIndent, menuRightIndent, background: theme.background, color: theme.color });
@@ -147,7 +145,7 @@ export const HeaderScroll = ({ categories, initialCurrentItem, onMenuClick }) =>
       </div>
       <div className={classes.cursor}>
         <span className={classes.bracket}>{"("}</span>
-        <span className={classes.blinkers}>{"༗"}</span>
+        <span className={classes.blinkers}>{'\u0F17'}</span>
         <span className={classes.bracket}>{")"}</span>
       </div>
     </div>

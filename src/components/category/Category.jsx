@@ -2,9 +2,9 @@ import React from 'react';
 import { createUseStyles } from 'react-jss';
 import { ThemeContext, themes } from '../../App';
 import { apiUrl } from '../../utils/Api';
-import { debounce } from '../../utils/UtilFuncs';
 import classNames from 'classnames';
 import { Error } from '../error/Error';
+import { Helmet } from 'react-helmet';
 
 const createCategoryStyles = createUseStyles(() => ({
 
@@ -20,18 +20,33 @@ const createCategoryStyles = createUseStyles(() => ({
     textTransform: 'uppercase',
   },
 
-  playModeBlock: ({ coverImage, background }) => ({
-    background: `center / cover no-repeat url(${coverImage})`,
+  playModeBlock: ({ background }) => ({
     backgroundColor: background,
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'center',
+    minWidth: global.minWidth,
+    height: '100%',
+  }),
+
+  coverImage: {
     position: 'absolute',
     top: 0,
-    left: 0,
     bottom: 0,
+    left: 0,
     right: 0,
+    objectFit: 'cover',
+    width: '100%',
+    height: '100%',
+  },
+
+  readModeBlock: {
+    minWidth: global.minWidth,
     display: 'flex',
+    flexDirection: 'column',
     justifyContent: 'center',
-    // animation: '$fadeIn 300ms',
-  }),
+    height: '100%',
+  },
 
   twoColumns: ({ background }) => ({
     position: 'fixed',
@@ -43,16 +58,24 @@ const createCategoryStyles = createUseStyles(() => ({
     height: '100%',
     display: 'flex',
     fontSize: 45,
-    // lineHeight: 1.1,
     justifyContent: 'center',
     backgroundColor: background,
   }),
 
   frameWrapper: {
     width: 750,
-    margin: 'auto',
+    margin: '0 auto',
     position: 'relative',
-    // lineHeight: 1.1,
+    minWidth: global.minWidth,
+    marginBottom: 90,
+  },
+
+  textFrameWrapper: {
+    width: 750,
+    margin: '0 auto',
+    position: 'relative',
+    minWidth: global.minWidth,
+    marginBottom: 90,
   },
 
   frame: {
@@ -64,9 +87,9 @@ const createCategoryStyles = createUseStyles(() => ({
     border: 'solid 2px white',
   },
 
-  frameNoEmbed: ({ coverImage }) => ({
-    background: `center / cover no-repeat url(${coverImage})`,
-  }),
+  frameNoEmbed: {
+    position: 'relative',
+  },
 
   embed: {
     position: 'absolute',
@@ -85,6 +108,8 @@ const createCategoryStyles = createUseStyles(() => ({
     top: 0,
     position: 'absolute',
     cursor: 'pointer',
+    width: 154,
+    textAlign: 'center',
   }),
 
   playButton: {
@@ -117,6 +142,7 @@ const createCategoryStyles = createUseStyles(() => ({
   firstColumn: {
     width: '50%',
     padding: 80,
+    paddingTop: 50,
     paddingRight: 120,
     wordWrap: 'break-word',
   },
@@ -129,16 +155,9 @@ const createCategoryStyles = createUseStyles(() => ({
   secondColumn: {
     width: '50%',
     padding: 80,
+    paddingTop: 50,
     paddingLeft: 120,
     wordWrap: 'break-word',
-  },
-
-  textFrameWrapper: {
-    position: 'absolute',
-    width: 750,
-    top: '50%',
-    left: '50%',
-    transform: 'translateY(-50%) translateX(-50%)',
   },
 
   textFrame: {
@@ -184,63 +203,113 @@ const createCategoryStyles = createUseStyles(() => ({
       top: 'auto',
       right: 0,
     }),
+
+    frameWrapper: {
+      position: 'absolute',
+      top: '50%',
+      left: '50%',
+      transform: 'translateY(-50%) translateX(-50%)',
+    },
+
+    textFrameWrapper: {
+      position: 'absolute',
+      top: '50%',
+      left: '50%',
+      transform: 'translateY(-50%) translateX(-50%)',
+    },
+  },
+
+  [`@media (max-width: 752px)`]: {
+    frameWrapper: {
+      width: '100%',
+    }
   },
 
   [`@media (max-width: ${global.maxWidth}px)`]: {
 
-    twoColumns: () => ({
-      top: 140,
-    }),
+  playModeBlock: () => ({
+    position: 'absolute',
+    left: 0,
+    right: 0,
+  }),
 
-    frameCenterLink: () => ({
-      fontSize: 40,
-    }),
+  twoColumns: () => ({
+    top: 140,
+  }),
 
-    rightButton: () => ({
-      fontSize: 40,
-      transform: 'translateY(calc(100% - 2px))',
-      bottom: 0,
-      top: 'auto',
-      padding: '20px 25px 15px 25px',
-    }),
-
-    firstColumn: {
-      padding: 40,
+  frameCenterLink: () => ({
+    fontSize: 40,
+    '&:hover, &:active': {
+      opacity: 1,
     },
+  }),
 
-    secondColumn: {
-      padding: 40,
+  rightButton: () => ({
+    fontSize: 40,
+    transform: 'translateY(calc(100% - 2px))',
+    bottom: 0,
+    top: 'auto',
+    padding: '20px 25px 15px 25px',
+    width: 138,
+  }),
+
+  playButton: {
+    '&:hover, &:active': {
+      color: 'inherit',
     },
-
-    textFrameWrapper: {
-      left: 0,
-      right: 0,
-      width: '100%',
-      transform: 'translateY(-50%) translateX(0)',
-    },
-
-    textFrameFirstColumn: {
-      padding: '10px 40px 10px 15px',
-      fontSize: 16,
-    },
-
-    textFrameSecondColumn: {
-      padding: '10px 10px 10px 40px',
-      fontSize: 16,
-    },
-
   },
+
+  readButton: {
+    '&:hover, &:active': {
+      color: 'inherit',
+    },
+  },
+
+  firstColumn: {
+    padding: 40,
+  },
+
+  secondColumn: {
+    padding: 40,
+  },
+
+  frameWrapper: {
+    left: 0,
+    right: 0,
+    top: '53%',
+    width: '100%',
+    transform: 'translateY(-50%) translateX(0)',
+  },
+
+  textFrameWrapper: {
+    left: 0,
+    right: 0,
+    width: '100%',
+    transform: 'translateY(-50%) translateX(0)',
+  },
+
+  textFrameFirstColumn: {
+    padding: '10px 40px 10px 15px',
+    fontSize: 16,
+  },
+
+  textFrameSecondColumn: {
+    padding: '10px 10px 10px 40px',
+    fontSize: 16,
+  },
+
+},
 }));
 
-export const Category = React.forwardRef(({ category, post, readMode, onSetReadMode, onSetPlayMode }) => {
+export const Category = ({ category, post, readMode, onSetReadMode, onSetPlayMode }) => {
   const { theme, setTheme } = React.useContext(ThemeContext);
   const [winWidth, setWinWidth] = React.useState(window.innerWidth);
   const [embedShowed, setEmbedShowed] = React.useState(false);
 
   React.useEffect(() => {
-    const debouncedHandleResize = debounce(() => setWinWidth(window.innerWidth), 300);
-    window.addEventListener('resize', debouncedHandleResize);
-    return () => window.removeEventListener('resize', debouncedHandleResize);
+    const handleResize = () => setWinWidth(window.innerWidth);
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
   })
 
   React.useEffect(() => {
@@ -252,7 +321,10 @@ export const Category = React.forwardRef(({ category, post, readMode, onSetReadM
   }, [])
 
   const coverImage = post && post.cover;
-  const classes = createCategoryStyles({ coverImage: apiUrl + coverImage, background: theme.background, color: theme.color });
+  const title = post && post.title;
+  const description = post && post.about;
+  const shareImage = post && apiUrl + post.about_cover;
+  const classes = createCategoryStyles({ background: theme.background, color: theme.color });
   const embed_url = post && post.embed_url;
   const external_url = post && post.external_url;
 
@@ -262,6 +334,14 @@ export const Category = React.forwardRef(({ category, post, readMode, onSetReadM
 
   return (
     <>
+      <Helmet>
+        <meta property="og:title" content={title} />
+        <meta property="og:description" content={description} />
+        <meta property="og:image" content={shareImage} />
+        <meta name="twitter:title" content={title} />
+        <meta name="twitter:description" content={description} />
+        <meta name="twitter:image" content={shareImage} />
+      </Helmet>
       {winWidth <= global.maxWidth && (
         <div className={classes.title}>
           {category.name}
@@ -287,15 +367,19 @@ export const Category = React.forwardRef(({ category, post, readMode, onSetReadM
             <div className={classes.textFrameWrapper}>
               <div className={classes.textFrame}>
                 <div className={classes.textFrameFirstColumn}>
-                  <div className={classes.textFrameTitle}>
-                    {post.title}
-                  </div>
+                  {winWidth > global.maxWidth && (
+                    <div className={classes.textFrameTitle}>
+                      {post.title}
+                    </div>
+                  )}
                   {winWidth > global.maxWidth ? post.description : post.short_description}
                 </div>
                 <div className={classes.textFrameSecondColumn}>
-                  <div className={classes.textFrameTitle}>
-                    {post.title}
-                  </div>
+                  {winWidth > global.maxWidth && (
+                    <div className={classes.textFrameTitle}>
+                      {post.title}
+                    </div>
+                  )}
                   {winWidth > global.maxWidth ? post.description_en : post.short_description_en}
                 </div>
                 {external_url && (
@@ -318,6 +402,10 @@ export const Category = React.forwardRef(({ category, post, readMode, onSetReadM
           </div>
         ) : (
           <div className={classes.playModeBlock}>
+            <img
+              className={classes.coverImage}
+              src={apiUrl + coverImage}
+            />
             <div className={classes.frameWrapper}>
               <div className={classNames(classes.frame, !embedShowed && classes.frameNoEmbed)}>
                 {embed_url.includes('youtube.com/embed') || embed_url.includes('player.vimeo.com')
@@ -339,12 +427,18 @@ export const Category = React.forwardRef(({ category, post, readMode, onSetReadM
                           />
                         )
                         : (
-                          <div
-                            className={classes.frameCenterLink}
-                            onClick={setEmbedShowed}
-                          >
-                            {'PLAY'}
-                          </div>
+                          <>
+                            <img
+                              className={classes.coverImage}
+                              src={apiUrl + coverImage}
+                            />
+                            <div
+                              className={classes.frameCenterLink}
+                              onClick={setEmbedShowed}
+                            >
+                              {'PLAY'}
+                            </div>
+                          </>
                         )
                       }
                     </>
@@ -371,5 +465,5 @@ export const Category = React.forwardRef(({ category, post, readMode, onSetReadM
         )
       }
     </>
-  );
-});
+  )
+};

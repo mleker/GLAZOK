@@ -6,17 +6,19 @@ import { ThemeContext, mailchimpUrl } from '../../App';
 import { useLocation } from 'react-router-dom';
 import MailchimpSubscribe from 'react-mailchimp-subscribe';
 import classNames from 'classnames';
-import { debounce } from '../../utils/UtilFuncs';
 
 const createFooterStyles = createUseStyles(() => ({
   footer: ({ color }) => ({
     fontSize: 20,
-    position: 'absolute',
-    bottom: 35,
+    paddingBottom: 30,
     left: '50%',
+    bottom: 0,
+    margin: '0 auto',
+    position: 'absolute',
     transform: 'translate(-50%)',
     width: 300,
     color: color,
+    zIndex: 10,
   }),
 
   row: {
@@ -48,10 +50,6 @@ const createFooterStyles = createUseStyles(() => ({
     width: 200,
     color: color,
   }),
-
-  submitButton: {
-
-  },
 
   disabledButton: {
     opacity: 0.5,
@@ -96,11 +94,11 @@ export const Footer = () => {
   let location = useLocation();
 
   React.useEffect(() => {
-    const debouncedHandleResize = debounce(() => setWinWidth(window.innerWidth), 300);
-    window.addEventListener('resize', debouncedHandleResize);
+    const handleResize = () => setWinWidth(window.innerWidth);
+    window.addEventListener('resize', handleResize);
     window.addEventListener('click', handleClick);
     return () => {
-      window.removeEventListener('resize', debouncedHandleResize);
+      window.removeEventListener('resize', handleResize);
       window.removeEventListener('click', handleClick);
     }
   })

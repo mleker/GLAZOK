@@ -2,17 +2,25 @@ import React from 'react';
 import { createUseStyles } from 'react-jss';
 import { ThemeContext } from '../../App';
 import { themes } from '../../App';
-import { debounce } from '../../utils/UtilFuncs';
+import classNames from 'classnames';
 
 const createAboutPageStyles = createUseStyles(() => ({
 
   aboutPage: ({ background, color }) => ({
     width: '100%',
+    height: '100%',
     color: color,
     backgroundColor: background,
     maxWidth: 1000,
     display: 'flex',
     margin: '0 auto',
+    fontSize: 14,
+    overflow: 'scroll',
+    paddingBottom: 100,
+    display: 'inline',
+    '&::-webkit-scrollbar': {
+      display: 'none',
+    },
   }),
 
   title: {
@@ -27,6 +35,7 @@ const createAboutPageStyles = createUseStyles(() => ({
     padding: [0, 10, 15, 10],
     margin: '0 auto',
     cursor: 'pointer',
+    textAlign: 'center',
   },
 
   logoWrapper: {
@@ -45,7 +54,6 @@ const createAboutPageStyles = createUseStyles(() => ({
   content: {
     width: '100%',
     display: 'flex',
-    overflow: 'scroll',
   },
 
   column: {
@@ -61,7 +69,7 @@ const createAboutPageStyles = createUseStyles(() => ({
   [`@media (max-width: ${global.maxWidth}px)`]: {
     aboutPage: () => ({
       flexDirection: 'column',
-      overflow: 'scroll',
+      paddingBottom: 0,
     }),
 
     content: {
@@ -71,7 +79,7 @@ const createAboutPageStyles = createUseStyles(() => ({
     column: {
       width: '100%',
       paddingTop: 0,
-    }
+    },
   },
 }));
 
@@ -81,9 +89,9 @@ export const AboutPage = () => {
   const [ruLang, setRuLang] = React.useState(false);
 
   React.useEffect(() => {
-    const debouncedHandleResize = debounce(() => setWinWidth(window.innerWidth), 300);
-    window.addEventListener('resize', debouncedHandleResize);
-    return () => window.removeEventListener('resize', debouncedHandleResize);
+    const handleResize = () => setWinWidth(window.innerWidth);
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
   })
 
   React.useEffect(() => {
@@ -93,161 +101,161 @@ export const AboutPage = () => {
   const classes = createAboutPageStyles({ background: theme.background, color: theme.color });
 
   return (
-    <div className={classes.aboutPage}>
-      {winWidth <= global.maxWidth && (
-        <>
-          <div className={classes.title}>
-            {'About'}
-          </div>
-          <div
-            className={classes.langSwitcher}
-            onClick={() => setRuLang(!ruLang)}
-          >
-            {ruLang ? 'ENG' : 'RU'}
-          </div>
-        </>
-      )}
-      <div className={classes.content}>
-        {(ruLang || winWidth > global.maxWidth) && (
-          <div className={classes.column}>
-            {'ГЛАЗОК (༗) —  это нестабильная видеоплатформа, медиа-мираж, эффект преломления визуальных потоков в пространстве институциональных и технологических связей разной плотности. Мы показываем фильмы, лекции, стримы и все, что посчитаем любопытным.'}
-            <br />
-            <br />
-            {'Если хотите, чтобы на глазке показали ваше готовое видео, заполните '}
-            <a
-              className={classes.link}
-              href='https://forms.gle/47Npbomj8v9TyrJq9'
-              target='blanc'
+      <div className={classes.aboutPage}>
+        {winWidth <= global.maxWidth && (
+          <>
+            <div className={classes.title}>
+              {'About'}
+            </div>
+            <div
+              className={classes.langSwitcher}
+              onClick={() => setRuLang(!ruLang)}
             >
-              {'форму'}
-            </a>
-            {'— мы постараемся дать фидбек.'}
-            <br />
-            <br />
-            {'Все, что мы когда-либо публиковали, можно найти в '}
-            <a
-              className={classes.link}
-              href='https://docs.google.com/spreadsheets/d/1hzc48oc334HERy3kJ7cSsZPeTqxzr8HoSINV5-nyTz0/edit?usp=sharing'
-              target='blanc'
-            >
-              {'архиве'}
-            </a>
-            {'. По той же ссылке — библиотека выложенных в открытый доступ фильмов, в формировании которой может поучаствовать каждая или каждый.'}
-            <br />
-            <br />
-            {'Мы полностью независимы и вкладываем в развитие платформы свое время и ресурсы. Поддержать нас можно с помощью '}
-            <a
-              className={classes.link}
-              href='https://www.buymeacoffee.com/glazok'
-              target='blanc'
-            >
-              {'Buy Me a Coffee'}
-            </a>
-            {'.'}
-            <br />
-            <br />
-            {'По всем остальным вопросам и с предложениями сотрудничества пишите на '}
-            <a
-              className={classes.link}
-              href="mailto:hi@glazok.tv">
-              {'почту'}
-            </a>
-            {'.'}
-            <br />
-            <br />
-            {'Кураторы: Рита Соколовская, Кирилл Роженцов'}
-            <br />
-            {'Дизайн: Даша Браженко, Вася Кондрашов'}
-            <br />
-            {'Разработка: Настя Млеко, Илья Осипов'}
-            <br />
-            {'Спасибо: Женя Л Збань, Анна Зыкина, Евгений Уваровский'}
-            <br />
-            <br />
-            <br />
-            <div className={classes.logoWrapper}>
-              <img
-                className={classes.logo}
-                src={require('./images/C-01.png')}
-                alt="logo"
-              />
-              <div className={classes.logoText}>
-                {'При поддержке Фонда Владимира Смирнова и Константина Сорокина'}
+              {ruLang ? 'ENG' : 'RU'}
+            </div>
+          </>
+        )}
+        <div className={classes.content}>
+          {(ruLang || winWidth > global.maxWidth) && (
+            <div className={classNames(classes.column, classes.columnLeft)}>
+              {'ГЛАЗОК (༗) —  это нестабильная видеоплатформа, медиа-мираж, эффект преломления визуальных потоков в пространстве институциональных и технологических связей разной плотности. Мы показываем фильмы, лекции, стримы и все, что посчитаем любопытным.'}
+              <br />
+              <br />
+              {'Если хотите, чтобы на глазке показали ваше готовое видео, заполните '}
+              <a
+                className={classes.link}
+                href='https://forms.gle/47Npbomj8v9TyrJq9'
+                target='blanc'
+              >
+                {'форму'}
+              </a>
+              {'— мы постараемся дать фидбек.'}
+              <br />
+              <br />
+              {'Все, что мы когда-либо публиковали, можно найти в '}
+              <a
+                className={classes.link}
+                href='https://docs.google.com/spreadsheets/d/1hzc48oc334HERy3kJ7cSsZPeTqxzr8HoSINV5-nyTz0/edit?usp=sharing'
+                target='blanc'
+              >
+                {'архиве'}
+              </a>
+              {'. По той же ссылке — библиотека выложенных в открытый доступ фильмов, в формировании которой может поучаствовать каждая или каждый.'}
+              <br />
+              <br />
+              {'Мы полностью независимы и вкладываем в развитие платформы свое время и ресурсы. Поддержать нас можно с помощью '}
+              <a
+                className={classes.link}
+                href='https://www.buymeacoffee.com/glazok'
+                target='blanc'
+              >
+                {'Buy Me a Coffee'}
+              </a>
+              {'.'}
+              <br />
+              <br />
+              {'По всем остальным вопросам и с предложениями сотрудничества пишите на '}
+              <a
+                className={classes.link}
+                href="mailto:hi@glazok.tv">
+                {'почту'}
+              </a>
+              {'.'}
+              <br />
+              <br />
+              {'Кураторы: Рита Соколовская, Кирилл Роженцов'}
+              <br />
+              {'Дизайн: Даша Браженко, Вася Кондрашов'}
+              <br />
+              {'Разработка: Настя Млеко, Илья Осипов'}
+              <br />
+              {'Спасибо: Женя Л Збань, Анна Зыкина, Евгений Уваровский'}
+              <br />
+              <br />
+              <br />
+              <div className={classes.logoWrapper}>
+                <img
+                  className={classes.logo}
+                  src={require('./images/C-01.png')}
+                  alt="logo"
+                />
+                <div className={classes.logoText}>
+                  {'При поддержке Фонда Владимира Смирнова и Константина Сорокина'}
+                </div>
               </div>
             </div>
-          </div>
-        )}
+          )}
 
-        {(!ruLang || winWidth > global.maxWidth) && (
-          <div className={classes.column}>
-            {'GLAZOK (༗) is an unstable video platform, a media-mirage, a deflection effect, produced by visual streams running through space with varying densities of institutional and technological relations. We screen films, lectures, live-feeds, and everything that we find curious.'}
-            <br />
-            <br />
-            {'If you want your finished video to premiere on glazok, please fill out the '}
-            <a
-              className={classes.link}
-              href='https://forms.gle/47Npbomj8v9TyrJq9'
-              target='blanc'
-            >
-              {'form'}
-            </a>
-            {'. We will do our best to give you feedback.'}
-            <br />
-            <br />
-            {'Everything we have ever screened is listed in our '}
-            <a
-              className={classes.link}
-              href='https://docs.google.com/spreadsheets/d/1hzc48oc334HERy3kJ7cSsZPeTqxzr8HoSINV5-nyTz0/edit?usp=sharing'
-              target='blanc'
-            >
-              {'archive'}
-            </a>
-            {'. There you can also find a catalogue of films available online and for free that is collectively updated and open to submissions from everyone.'}
-            <br />
-            <br />
-            {'We are completely independent and invest our own funds and energy into the platform. You can support us and donate via '}
-            <a
-              className={classes.link}
-              href='https://www.buymeacoffee.com/glazok'
-              target='blanc'
-            >
-              {'Buy Me a Coffee'}
-            </a>
-            {'.'}
-            <br />
-            <br />
-            {'If you have any questions or want to collaborate, send us a '}
-            <a
-              className={classes.link}
-              href="mailto:hi@glazok.tv">
-              {'letter'}
-            </a>
-            {'.'}
-            <br />
-            <br />
-            {'Curating: Rita Sokolovskaya, Kirill Rozhentsov'}
-            <br />
-            {'Design: Dasha Brazhenko, Vasya Kondrashov'}
-            <br />
-            {'Code: Nastya Mleko, Ilya Osipov'}
-            <br />
-            {'Thanks: Zhenya L Zban, Anna Zykina, Evgeniy Uvarovskiy'}
-            <br />
-            <br />
-            <br />
-            <div className={classes.logoWrapper}>
-              <img
-                className={classes.logo}
-                src={require('./images/C-01.png')}
-                alt="logo"
-              />
-              <div className={classes.logoText}>
-                {'With the support of the Vladimir Smirnov and Konstantin Sorokin Foundation'}
+          {(!ruLang || winWidth > global.maxWidth) && (
+            <div className={classNames(classes.column, classes.columnRight)}>
+              {'GLAZOK (༗) is an unstable video platform, a media-mirage, a deflection effect, produced by visual streams running through space with varying densities of institutional and technological relations. We screen films, lectures, live-feeds, and everything that we find curious.'}
+              <br />
+              <br />
+              {'If you want your finished video to premiere on glazok, please fill out the '}
+              <a
+                className={classes.link}
+                href='https://forms.gle/47Npbomj8v9TyrJq9'
+                target='blanc'
+              >
+                {'form'}
+              </a>
+              {'. We will do our best to give you feedback.'}
+              <br />
+              <br />
+              {'Everything we have ever screened is listed in our '}
+              <a
+                className={classes.link}
+                href='https://docs.google.com/spreadsheets/d/1hzc48oc334HERy3kJ7cSsZPeTqxzr8HoSINV5-nyTz0/edit?usp=sharing'
+                target='blanc'
+              >
+                {'archive'}
+              </a>
+              {'. There you can also find a catalogue of films available online and for free that is collectively updated and open to submissions from everyone.'}
+              <br />
+              <br />
+              {'We are completely independent and invest our own funds and energy into the platform. You can support us and donate via '}
+              <a
+                className={classes.link}
+                href='https://www.buymeacoffee.com/glazok'
+                target='blanc'
+              >
+                {'Buy Me a Coffee'}
+              </a>
+              {'.'}
+              <br />
+              <br />
+              {'If you have any questions or want to collaborate, send us a '}
+              <a
+                className={classes.link}
+                href="mailto:hi@glazok.tv">
+                {'letter'}
+              </a>
+              {'.'}
+              <br />
+              <br />
+              {'Curating: Rita Sokolovskaya, Kirill Rozhentsov'}
+              <br />
+              {'Design: Dasha Brazhenko, Vasya Kondrashov'}
+              <br />
+              {'Code: Nastya Mleko, Ilya Osipov'}
+              <br />
+              {'Thanks: Zhenya L Zban, Anna Zykina, Evgeniy Uvarovskiy'}
+              <br />
+              <br />
+              <br />
+              <div className={classes.logoWrapper}>
+                <img
+                  className={classes.logo}
+                  src={require('./images/C-01.png')}
+                  alt="logo"
+                />
+                <div className={classes.logoText}>
+                  {'With the support of the Vladimir Smirnov and Konstantin Sorokin Foundation'}
+                </div>
               </div>
             </div>
-          </div>
-        )}
+          )}
+        </div>
       </div>
-    </div>
   );
 };

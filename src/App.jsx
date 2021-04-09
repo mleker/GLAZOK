@@ -19,21 +19,23 @@ require('./assets/favicon-32x32.png');
 require('./assets/mstile-150x150.png');
 require('./assets/safari-pinned-tab.svg');
 require('./assets/share-fb.jpg');
-import { Route, Redirect, Switch } from 'react-router-dom';
+import { Route, Switch } from 'react-router-dom';
 import { Loading } from './components/loading/Loading';
 import { Error } from './components/error/Error';
-import { debounce } from './utils/UtilFuncs';
+import { Helmet } from 'react-helmet';
 
 global.maxWidth = 690;
+global.minWidth = 360;
+global.minHeight = 640;
 
 jss.createStyleSheet({
   '@font-face': {
     fontFamily: 'Panama',
     fontWeight: 'normal',
     fontStyle: 'normal',
-    src: `url(${PanamaWoff}) format("woff")`,
+    src: `url(${PanamaOtf}) format("otf")`,
     fallbacks: [
-      { src: `url(${PanamaOtf}) format("otf")` },
+      { src: `url(${PanamaWoff}) format("woff")` },
       { src: `url(${PanamaTtf}) format("truetype")` },
       { src: `url(${PanamaWoff2}) format("woff2")` },
       { src: `url(${PanamaEot}) format("embedded-opentype")` },
@@ -45,6 +47,8 @@ jss.createStyleSheet({
   '@global': {
     html: {
       height: '100%',
+      minWidth: global.minWidth,
+      minHeight: global.minHeight,
     },
 
     body: {
@@ -61,6 +65,9 @@ jss.createStyleSheet({
     a: {
       all: 'unset',
       color: 'inherit',
+      '&:visited': {
+        color: 'inherit',
+      }
     },
 
     input: {
@@ -75,7 +82,7 @@ jss.createStyleSheet({
     '*': {
       boxSizing: 'border-box',
     },
-  }
+  },
 }).attach();
 
 export const themes = {
@@ -99,7 +106,7 @@ export const App = () => {
   const [posts, setPosts] = React.useState(null);
   const [error, setError] = React.useState();
   const [, setWinWidth] = React.useState(window.innerWidth);
-  
+
   let nulls = [];
   let sortedCategories = categories && categories.slice();
   sortedCategories && sortedCategories.map(
@@ -114,9 +121,9 @@ export const App = () => {
   sortedCategories = sortedCategories && nulls && sortedCategories.concat(nulls);
 
   React.useEffect(() => {
-    const debouncedHandleResize = debounce(() => setWinWidth(window.innerWidth), 300);
-    window.addEventListener('resize', debouncedHandleResize);
-    return () => window.removeEventListener('resize', debouncedHandleResize);
+    const handleResize = () => setWinWidth(window.innerWidth);
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
   })
 
   React.useEffect(() => {
@@ -143,13 +150,20 @@ export const App = () => {
 
   return (
     <ThemeContext.Provider value={{ theme, setTheme }}>
+      <Helmet>
+        <meta property="og:title" content="glazok.tv" />
+        <meta property="og:description" content="GLAZOK (༗) is an unstable video platform for films, lectures, and live-feeds." />
+        <meta property="og:image" content="https://glazok.tv/share-fb.jpg" />
+        <meta name="twitter:title" content="glazok.tv" />
+        <meta name="twitter:description" content="GLAZOK (༗) is an unstable video platform for films, lectures, and live-feeds." />
+        <meta name="twitter:image" content="https://glazok.tv/share-fb.jpg" />
+      </Helmet>
       {sortedCategories && posts
         ? (
           <Switch>
             <Route path={createHomeUrl()}>
               <RootPage categories={sortedCategories} posts={posts} />
             </Route>
-            <Redirect from={createHomeUrl()} to={sortedCategories[0].custom_url} push={true} />
             <Route component={Error} />
           </Switch>
         ) : (

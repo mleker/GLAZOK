@@ -26,12 +26,14 @@ const createHeaderSlideStyles = createUseStyles(() => ({
     },
 
     blinkers: {
-        animation: '$blinker 1s steps(2, jump-none) infinite',
+        animationName: '$blinker',
+        animationDuration: '1s',
+        animationIterationCount: 'infinite',
+        animationTimingFunction: 'steps(2, start)',
     },
 
     '@keyframes blinker': {
-        from: { opacity: 1 },
-        to: { opacity: 0 }
+        to: { visibility: 'hidden' },
     },
 
     headerWithMenu: ({ background }) => ({
@@ -65,6 +67,7 @@ const createHeaderSlideStyles = createUseStyles(() => ({
         right: 20,
         transform: 'translateY(-50%)',
         stroke: color,
+        marginTop: -3,
     }),
 
     burgerMenu: ({ background }) => ({
@@ -193,10 +196,6 @@ export const HeaderSlide = ({ withArrows = true, categories, initialCurrentItem,
     }
 
     const handleChangeInputValue = (event) => setInputValue(event.target.value);
-
-    React.useEffect(() => {
-        history.push(categories[initialCurrentItem].custom_url);
-    }, [initialCurrentItem]);
 
     return (
         <div className={classNames(classes.header, menuOpened && classes.headerWithMenu)}>

@@ -8,45 +8,38 @@ import { ThemeContext, themes } from '../../App';
 import { Category } from '../category/Category';
 import { createAboutUrl, createHomeUrl } from '../../utils/AppUrlCreators';
 import { AboutPage } from '../about/AboutPage';
-import { debounce } from '../../utils/UtilFuncs';
+import { apiUrl } from '../../utils/Api';
 
 const createRootPageStyles = createUseStyles(() => ({
 
     rootPage: ({ background, color }) => ({
         width: '100%',
-        minHeight: '100vh',
+        height: '100vh',
         display: 'flex',
         flexDirection: 'column',
         color: color,
         backgroundColor: background,
         overflow: 'hidden',
+        minHeight: 640,
+        position: 'relative',
     }),
 
-    fadeEnter: {
-        opacity: 0,
-        transition: 'all 300ms',
+    coverImage: {
+        position: 'absolute',
+        top: 0,
+        bottom: 0,
+        left: 0,
+        right: 0,
+        objectFit: 'cover',
+        width: '100%',
+        height: '100%',
     },
-
-    fadeEnterActive: {
-        opacity: 1,
-        transition: 'all 300ms',
-    },
-
-
-    fadeExit: {
-        opacity: 1,
-        transition: 'all 300ms',
-    },
-
-    fadeExitActive: {
-        opacity: 0,
-        transition: 'all 300ms',
-    },
-
 
     [`@media (max-width: ${global.maxWidth}px)`]: {
 
-
+        rootPage: () => ({
+            justifyContent: 'start',
+        }),
     },
 }));
 
@@ -64,12 +57,12 @@ export const RootPage = ({ categories, posts }) => {
     let yDown = null;
 
     React.useEffect(() => {
-        const debouncedHandleResize = debounce(() => setWinWidth(window.innerWidth), 300);
-        window.addEventListener('resize', debouncedHandleResize);
+        const handleResize = () => setWinWidth(window.innerWidth);
+        window.addEventListener('resize', handleResize);
         window.addEventListener('touchstart', handleTouchStart, false);
         window.addEventListener('touchmove', handleTouchMove, false);
         return () => {
-            window.removeEventListener('resize', debouncedHandleResize);
+            window.removeEventListener('resize', handleResize);
             window.removeEventListener('touchstart', handleTouchStart);
             window.removeEventListener('touchmove', handleTouchMove);
         }
@@ -82,6 +75,13 @@ export const RootPage = ({ categories, posts }) => {
             }
         });
     }, [categories]);
+
+    React.useEffect(() => {
+        posts.forEach((post) => {
+            post.image = new Image();
+            post.image.src = apiUrl + post.cover;
+        });
+    }, [posts]);
 
     const handleTouchStart = (evt) => {
         const firstTouch = getTouches(evt)[0];
@@ -165,7 +165,7 @@ export const RootPage = ({ categories, posts }) => {
                                 />
                             </Route>
                         )}
-                        <Redirect from={createHomeUrl()} to={categories[0].custom_url} replace={true} />
+                        <Redirect exact from={createHomeUrl()} to={categories[0].custom_url} />
                     </Switch>
                     <Footer />
                 </div>
