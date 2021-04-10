@@ -4,7 +4,6 @@ import { ThemeContext, themes } from '../../App';
 import { apiUrl } from '../../utils/Api';
 import classNames from 'classnames';
 import { Error } from '../error/Error';
-import { Helmet } from 'react-helmet';
 
 const createCategoryStyles = createUseStyles(() => ({
 
@@ -334,16 +333,6 @@ export const Category = ({ category, post, readMode, onSetReadMode, onSetPlayMod
 
   return (
     <>
-      <Helmet>
-        <meta id="category" property="og:type" content="site" />
-        <meta property="og:title" content={title} />
-        <meta property="og:description" content={description} />
-        <meta property="og:image" content={shareImage} />
-        <meta id="category" name="twitter:card" content="summary" />
-        <meta name="twitter:title" content={title} />
-        <meta name="twitter:description" content={description} />
-        <meta name="twitter:image" content={shareImage} />
-      </Helmet>
       {winWidth <= global.maxWidth && (
         <div className={classes.title}>
           {category.name}

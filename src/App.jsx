@@ -1,4 +1,5 @@
 import React from 'react';
+import 'normalize.css';
 import { jss } from 'react-jss';
 import { RootPage } from './components/root/RootPage';
 import { getCategories, getPosts } from './utils/Api';
@@ -21,15 +22,10 @@ require('./assets/share-fb.jpg');
 import { Route, Switch } from 'react-router-dom';
 import { Loading } from './components/loading/Loading';
 import { Error } from './components/error/Error';
-import { Helmet } from 'react-helmet';
 
 global.maxWidth = 690;
 global.minWidth = 360;
 global.minHeight = 640;
-
-jss.setup({
-  insertionPoint: document.getElementById('insertion-point')
-})
 
 jss.createStyleSheet({
   '@font-face': {
@@ -152,31 +148,7 @@ export const App = () => {
   }
 
   return (
-    <ThemeContext.Provider value={{ theme, setTheme }}>
-      <Helmet>
-        <meta charset="utf-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
-        <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
-        <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
-        <link rel="manifest" href="/site.webmanifest" />
-        <link rel="mask-icon" href="/safari-pinned-tab.svg" color="#000000" />
-        <meta name="msapplication-TileColor" content="#000000" />
-        <meta name="theme-color" content="#ffffff" />
-        <link rel="manifest" href="/site.webmanifest" />
-        <title>GLAZOK</title>
-        <link rel="shortcut icon" href="favicon.ico" />
-        <meta property="title" content="glazok.tv" />
-        <meta name="description" content="GLAZOK (༗) is an unstable video platform for films, lectures, and live-feeds." />
-        <meta property="og:type" content="site" />
-        <meta property="og:title" content="glazok.tv" />
-        <meta property="og:description" content="GLAZOK (༗) is an unstable video platform for films, lectures, and live-feeds." />
-        <meta property="og:image" content="https://glazok.tv/share-fb.jpg" />
-        <meta name="twitter:card" content="summary" />
-        <meta name="twitter:title" content="glazok.tv" />
-        <meta name="twitter:description" content="GLAZOK (༗) is an unstable video platform for films, lectures, and live-feeds." />
-        <meta name="twitter:image" content="https://glazok.tv/share-fb.jpg" />
-      </Helmet>
+    <ThemeContext.Provider value={{ theme, setTheme }}> 
       {sortedCategories && posts
         ? (
           <Switch>
