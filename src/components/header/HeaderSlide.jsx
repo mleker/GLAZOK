@@ -197,6 +197,10 @@ export const HeaderSlide = ({ withArrows = true, categories, initialCurrentItem,
 
     const handleChangeInputValue = (event) => setInputValue(event.target.value);
 
+    React.useEffect(() => {
+        history.push(categories[initialCurrentItem].custom_url);
+    }, [initialCurrentItem]);
+
     return (
         <div className={classNames(classes.header, menuOpened && classes.headerWithMenu)}>
             <div className={classes.cursor}>

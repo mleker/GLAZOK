@@ -59,8 +59,10 @@ export const RootPage = ({ categories, posts }) => {
     React.useEffect(() => {
         const handleResize = () => setWinWidth(window.innerWidth);
         window.addEventListener('resize', handleResize);
-        window.addEventListener('touchstart', handleTouchStart, false);
-        window.addEventListener('touchmove', handleTouchMove, false);
+        if (winWidth <= global.maxWidth) {
+            window.addEventListener('touchstart', handleTouchStart, false);
+            window.addEventListener('touchmove', handleTouchMove, false);
+        }
         return () => {
             window.removeEventListener('resize', handleResize);
             window.removeEventListener('touchstart', handleTouchStart);

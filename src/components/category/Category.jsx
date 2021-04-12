@@ -275,7 +275,7 @@ const createCategoryStyles = createUseStyles(() => ({
     frameWrapper: {
       left: 0,
       right: 0,
-      top: '53%',
+      top: '52%',
       width: '100%',
       transform: 'translateY(-50%) translateX(0)',
     },
@@ -283,6 +283,7 @@ const createCategoryStyles = createUseStyles(() => ({
     textFrameWrapper: {
       left: 0,
       right: 0,
+      top: '52%',
       width: '100%',
       transform: 'translateY(-50%) translateX(0)',
     },
