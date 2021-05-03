@@ -81,12 +81,23 @@ const createFooterStyles = createUseStyles(() => ({
     extend: 'inputMsg',
     color: 'green',
   },
+  
+
+  [`@media (max-height: ${global.maxHeight}px)`]: {
+    footer: () => ({
+      fontSize: 12,
+      paddingBottom: 5,
+      position: 'static',
+      transform: 'none',
+    }),
+  },
 
 }));
 
 export const Footer = () => {
   const { theme } = React.useContext(ThemeContext);
   const [winWidth, setWinWidth] = React.useState(window.innerWidth);
+  const [winHeight, setWinHeight] = React.useState(window.innerHeight);
   const [inputValue, setInputValue] = React.useState('');
   const [inputVisible, setInputVisible] = React.useState(false);
   const inputWrapperHtmlEl = React.useRef();
@@ -94,7 +105,11 @@ export const Footer = () => {
   let location = useLocation();
 
   React.useEffect(() => {
-    const handleResize = () => setWinWidth(window.innerWidth);
+    const handleResize = () => {
+      setWinWidth(window.innerWidth);
+      setWinHeight(window.innerHeight);
+    };
+
     window.addEventListener('resize', handleResize);
     window.addEventListener('click', handleClick);
     return () => {
@@ -107,7 +122,7 @@ export const Footer = () => {
   const handleClick = (event) => inputVisible && !inputWrapperHtmlEl.current.contains(event.target) && setInputVisible(false);
 
   return (
-    winWidth > global.maxWidth && (
+    (winWidth > global.width3 || winHeight < global.height1) && (
       <div className={classes.footer}>
         <div className={classes.row}>
           <a

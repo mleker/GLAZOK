@@ -66,7 +66,7 @@ const createAboutPageStyles = createUseStyles(() => ({
     textDecoration: 'underline',
   },
 
-  [`@media (max-width: ${global.maxWidth}px)`]: {
+  [`@media (max-width: ${global.width3}px)`]: {
     aboutPage: () => ({
       flexDirection: 'column',
       paddingBottom: 0,
@@ -102,7 +102,7 @@ export const AboutPage = () => {
 
   return (
       <div className={classes.aboutPage}>
-        {winWidth <= global.maxWidth && (
+        {winWidth <= global.width3 && (
           <>
             <div className={classes.title}>
               {'About'}
@@ -116,7 +116,7 @@ export const AboutPage = () => {
           </>
         )}
         <div className={classes.content}>
-          {(ruLang || winWidth > global.maxWidth) && (
+          {(ruLang || winWidth > global.width3) && (
             <div className={classNames(classes.column, classes.columnLeft)}>
               {'ГЛАЗОК (༗) —  это нестабильная видеоплатформа, медиа-мираж, эффект преломления визуальных потоков в пространстве институциональных и технологических связей разной плотности. Мы показываем фильмы, лекции, стримы и все, что посчитаем любопытным.'}
               <br />
@@ -186,7 +186,7 @@ export const AboutPage = () => {
             </div>
           )}
 
-          {(!ruLang || winWidth > global.maxWidth) && (
+          {(!ruLang || winWidth > global.width3) && (
             <div className={classNames(classes.column, classes.columnRight)}>
               {'GLAZOK (༗) is an unstable video platform, a media-mirage, a deflection effect, produced by visual streams running through space with varying densities of institutional and technological relations. We screen films, lectures, live-feeds, and everything that we find curious.'}
               <br />

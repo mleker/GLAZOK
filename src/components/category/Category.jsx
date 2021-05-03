@@ -100,9 +100,9 @@ const createCategoryStyles = createUseStyles(() => ({
     fontSize: 57,
     backgroundColor: background,
     color: color,
-    padding: '10px 15px 10px 15px',
+    padding: '15px 15px 8px 15px',
     border: `2px solid ${color}`,
-    right: -0.5,
+    right: 0,
     transform: 'translateX(calc(100% - 2px))',
     top: 0,
     position: 'absolute',
@@ -142,7 +142,7 @@ const createCategoryStyles = createUseStyles(() => ({
     width: '50%',
     padding: 80,
     paddingTop: 50,
-    paddingRight: 120,
+    paddingRight: 135,
     wordWrap: 'break-word',
   },
 
@@ -155,7 +155,7 @@ const createCategoryStyles = createUseStyles(() => ({
     width: '50%',
     padding: 80,
     paddingTop: 50,
-    paddingLeft: 120,
+    paddingLeft: 135,
     wordWrap: 'break-word',
   },
 
@@ -177,14 +177,14 @@ const createCategoryStyles = createUseStyles(() => ({
   textFrameFirstColumn: {
     width: '50%',
     fontSize: 20,
-    padding: '45px 70px 20px 20px',
+    padding: '20px 70px 20px 20px',
     wordWrap: 'break-word',
   },
 
   textFrameSecondColumn: {
     width: '50%',
     fontSize: 20,
-    padding: '45px 20px 20px 70px',
+    padding: '20px 20px 20px 70px',
     wordWrap: 'break-word',
   },
 
@@ -195,36 +195,122 @@ const createCategoryStyles = createUseStyles(() => ({
     transform: 'translate(-50%)',
   },
 
-  [`@media (max-width: 1055px)`]: {
+  [`@media (max-height: ${global.maxHeight}px)`]: {
+
+    frameWrapper: {
+      width: 600,
+      marginBottom: 0,
+    },
+
+    textFrameWrapper: {
+      width: 600,
+      marginBottom: 0,
+    },
+
+    textFrameFirstColumn: {
+      padding: '10px 40px 10px 15px',
+      fontSize: 12,
+    },
+
+    textFrameSecondColumn: {
+      padding: '10px 10px 10px 40px',
+      fontSize: 12,
+    },
+
+    frameCenterLink: () => ({
+      fontSize: 33,
+    }),
+
+    rightButton: () => ({
+      fontSize: 33,
+      width: 100,
+    }),
+
+    twoColumns: () => ({
+      fontSize: 33,
+      top: 54,
+    }),
+
+    firstColumn: {
+      paddingTop: 20,
+      paddingLeft: 40,
+    },
+
+    secondColumn: {
+      paddingTop: 20,
+      paddingRight: 20,
+    },
+
+  },
+
+  [`@media (max-width: ${global.maxWidth}px)`]: {
+
+    frameWrapper: {
+      width: '60%',
+    },
+
+    textFrameWrapper: {
+      width: '60%',
+    },
+  },
+
+  [`@media (max-width: ${global.width2}px)`]: {
+    frameWrapper: {
+      width: '60%',
+    },
+
+    textFrameWrapper: {
+      width: '60%',
+    },
+
+    textFrameFirstColumn: {
+      padding: '10px 40px 10px 15px',
+      fontSize: 16,
+    },
+
+    textFrameSecondColumn: {
+      padding: '10px 10px 10px 40px',
+      fontSize: 16,
+    },
+
     rightButton: () => ({
       transform: 'translateY(calc(100% - 2px))',
       bottom: 0,
       top: 'auto',
-      right: 0,
     }),
+  },
+
+  [`@media (max-width: ${global.width2}px) and (max-height: ${global.height2}px)`]: {
 
     frameWrapper: {
-      position: 'absolute',
-      top: '50%',
-      left: '50%',
-      transform: 'translateY(-50%) translateX(-50%)',
+      width: '60%',
     },
 
     textFrameWrapper: {
-      position: 'absolute',
-      top: '50%',
-      left: '50%',
-      transform: 'translateY(-50%) translateX(-50%)',
+      width: '60%',
     },
+
+    textFrameFirstColumn: {
+      padding: '10px 40px 10px 15px',
+      fontSize: 16,
+    },
+
+    textFrameSecondColumn: {
+      padding: '10px 10px 10px 40px',
+      fontSize: 16,
+    },
+
+    frameCenterLink: () => ({
+      fontSize: 33,
+    }),
+
+    rightButton: () => ({
+      fontSize: 33,
+      width: 100,
+    }),
   },
 
-  [`@media (max-width: 752px)`]: {
-    frameWrapper: {
-      width: '100%',
-    }
-  },
-
-  [`@media (max-width: ${global.maxWidth}px)`]: {
+  [`@media (max-width: ${global.width3}px)`]: {
 
     playModeBlock: () => ({
       position: 'absolute',
@@ -266,13 +352,16 @@ const createCategoryStyles = createUseStyles(() => ({
 
     firstColumn: {
       padding: 40,
+      paddingTop: 20,
     },
 
     secondColumn: {
       padding: 40,
+      paddingTop: 20,
     },
 
     frameWrapper: {
+      position: 'absolute',
       left: 0,
       right: 0,
       top: '52%',
@@ -281,6 +370,7 @@ const createCategoryStyles = createUseStyles(() => ({
     },
 
     textFrameWrapper: {
+      position: 'absolute',
       left: 0,
       right: 0,
       top: '52%',
@@ -290,24 +380,64 @@ const createCategoryStyles = createUseStyles(() => ({
 
     textFrameFirstColumn: {
       padding: '10px 40px 10px 15px',
-      fontSize: 16,
+      fontSize: 12,
     },
 
     textFrameSecondColumn: {
       padding: '10px 10px 10px 40px',
-      fontSize: 16,
+      fontSize: 12,
+    },
+  },
+
+  [`@media (max-height: ${global.height2}px)`]: {
+    frameWrapper: {
+      width: 345,
     },
 
+    textFrameWrapper: {
+      width: 345,
+    },
+
+    textFrameFirstColumn: {
+      padding: '10px 30px 10px 15px',
+      fontSize: 12,
+    },
+
+    textFrameSecondColumn: {
+      padding: '10px 10px 10px 30px',
+      fontSize: 12,
+    },
+
+    rightButton: () => ({
+      right: -0.5,
+      transform: 'translateX(calc(100% - 2px))',
+      top: 0,
+      bottom: 'unset',
+      fontSize: 33,
+      width: 100,
+      padding: '15px 15px 8px 15px',
+    }),
+
+    frameCenterLink: () => ({
+      fontSize: 33,
+    }),
+
   },
+
 }));
 
 export const Category = ({ category, post, readMode, onSetReadMode, onSetPlayMode }) => {
   const { theme, setTheme } = React.useContext(ThemeContext);
   const [winWidth, setWinWidth] = React.useState(window.innerWidth);
+  const [winHeight, setWinHeight] = React.useState(window.innerHeight);
   const [embedShowed, setEmbedShowed] = React.useState(false);
 
   React.useEffect(() => {
-    const handleResize = () => setWinWidth(window.innerWidth);
+    const handleResize = () => {
+      setWinWidth(window.innerWidth);
+      setWinHeight(window.innerHeight);
+    };
+
     window.addEventListener('resize', handleResize);
     return () => window.removeEventListener('resize', handleResize);
   })
@@ -321,9 +451,9 @@ export const Category = ({ category, post, readMode, onSetReadMode, onSetPlayMod
   }, [])
 
   const coverImage = post && post.cover;
-  const title = post && post.title;
-  const description = post && post.about;
-  const shareImage = post && apiUrl + post.about_cover;
+  // const title = post && post.title;
+  // const description = post && post.about;
+  // const shareImage = post && apiUrl + post.about_cover;
   const classes = createCategoryStyles({ background: theme.background, color: theme.color });
   const embed_url = post && post.embed_url;
   const external_url = post && post.external_url;
@@ -334,7 +464,7 @@ export const Category = ({ category, post, readMode, onSetReadMode, onSetPlayMod
 
   return (
     <>
-      {winWidth <= global.maxWidth && (
+      {winWidth <= global.width3 && winHeight >= global.height1 && (
         <div className={classes.title}>
           {category.name}
         </div>
@@ -344,35 +474,51 @@ export const Category = ({ category, post, readMode, onSetReadMode, onSetPlayMod
           <div className={classes.readModeBlock}>
             <div className={classes.twoColumns}>
               <div className={classes.firstColumn}>
-                <div className={classes.postTitle}>
-                  {post.title}
-                </div>
-                {winWidth > global.maxWidth ? post.description : post.short_description}
+                {!(winWidth <= global.maxWidth || winHeight <= global.height2) && (
+                  <div className={classes.postTitle}>
+                    {post.title}
+                  </div>
+                )}
+                {winWidth > global.maxWidth
+                  ? post.description
+                  : post.short_description
+                }
               </div>
               <div className={classes.secondColumn}>
-                <div className={classes.postTitle}>
-                  {post.title}
-                </div>
-                {winWidth > global.maxWidth ? post.description_en : post.short_description_en}
+                {!(winWidth <= global.maxWidth || winHeight <= global.height2) && (
+                  <div className={classes.postTitle}>
+                    {post.title_en}
+                  </div>
+                )}
+                {winWidth > global.maxWidth
+                  ? post.description_en
+                  : post.short_description_en
+                }
               </div>
             </div>
             <div className={classes.textFrameWrapper}>
               <div className={classes.textFrame}>
                 <div className={classes.textFrameFirstColumn}>
-                  {winWidth > global.maxWidth && (
+                  {!(winWidth <= global.maxWidth || winHeight <= global.height2) && (
                     <div className={classes.textFrameTitle}>
                       {post.title}
                     </div>
                   )}
-                  {winWidth > global.maxWidth ? post.description : post.short_description}
+                  {winWidth <= global.maxWidth || winHeight <= global.height2
+                    ? post.short_description
+                    : post.description
+                  }
                 </div>
                 <div className={classes.textFrameSecondColumn}>
-                  {winWidth > global.maxWidth && (
+                  {!(winWidth <= global.maxWidth || winHeight <= global.height2) && (
                     <div className={classes.textFrameTitle}>
-                      {post.title}
+                      {post.title_en}
                     </div>
                   )}
-                  {winWidth > global.maxWidth ? post.description_en : post.short_description_en}
+                  {winWidth <= global.maxWidth || winHeight <= global.height2
+                    ? post.short_description_en
+                    : post.description_en
+                  }
                 </div>
                 {external_url && (
                   <a

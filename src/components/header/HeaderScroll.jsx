@@ -64,12 +64,32 @@ const createHeaderScrollStyles = createUseStyles(() => ({
   '@keyframes blinker': {
     to: { visibility: 'hidden' },
   },
+
+  [`@media (max-height: ${global.maxHeight}px)`]: {
+
+    header: () => ({
+      fontSize: 33,
+      paddingTop: 10,
+      paddingBottom: 5,
+    }),
+
+    cursor: () => ({
+      top: 10,
+    }),
+
+    bracket: {
+      fontSize: 30,
+    },
+  },
 }));
 
 const scrollHorizontally = (e, itemsWrapper) => {
-  // e.preventDefault();
-  const delta = Math.max(-1, Math.min(1, e.wheelDeltaY));
-  itemsWrapper.scrollLeft -= delta * 5;
+  if (e.wheelDeltaY > 9 || e.wheelDeltaY < -9) {
+    const delta = Math.max(-1, Math.min(1, e.wheelDeltaY));
+    itemsWrapper.scrollLeft -= delta * 5;
+  } else {
+    e.preventDefault();
+  }
 }
 
 const getCurrentItem = (items, winCenter) => {
@@ -90,8 +110,10 @@ export const HeaderScroll = ({ categories, initialCurrentItem, onMenuClick }) =>
   const menuWrapperHtmlEl = React.useRef();
   const [currentItem, setCurrentItem] = React.useState(initialCurrentItem);
   const [winWidth, setWinWidth] = React.useState(window.innerWidth);
+  const [winHeight, setWinHeight] = React.useState(window.innerHeight);
 
   const onMouseWheel = (e) => {
+
     scrollHorizontally(e, menuWrapperHtmlEl.current);
     const newCurrentItem = getCurrentItem(menuHtmlEls.current, winWidth / 2);
     if (currentItem !== newCurrentItem) {
@@ -101,10 +123,15 @@ export const HeaderScroll = ({ categories, initialCurrentItem, onMenuClick }) =>
   }
 
   React.useEffect(() => {
-    window.addEventListener('resize', () => setWinWidth(window.innerWidth));
+    const handleResize = () => {
+      setWinWidth(window.innerWidth);
+      setWinHeight(window.innerHeight);
+    }
+
+    window.addEventListener('resize', handleResize);
     window.addEventListener('mousewheel', onMouseWheel, false);
     return () => {
-      window.removeEventListener('resize', () => setWinWidth(window.innerWidth));
+      window.removeEventListener('resize', handleResize);
       window.removeEventListener('mousewheel', onMouseWheel);
     }
   })
@@ -112,10 +139,10 @@ export const HeaderScroll = ({ categories, initialCurrentItem, onMenuClick }) =>
   React.useEffect(() => {
     setMenuLeftIndent(winWidth / 2 - (menuHtmlEls.current[0].offsetLeft - menuLeftIndent) - menuHtmlEls.current[0].offsetWidth / 2);
     setMenuRightIndent(winWidth / 2 - menuHtmlEls.current[Object.keys(menuHtmlEls.current).length - 1].offsetWidth / 2 - 30 - menuRightIndent);
-  }, [winWidth])
+  }, [winWidth, winHeight])
 
   React.useEffect(() => {
-      menuWrapperHtmlEl.current.scrollLeft = menuHtmlEls.current[initialCurrentItem].offsetLeft - winWidth / 2 + menuHtmlEls.current[initialCurrentItem].offsetWidth / 2;
+    menuWrapperHtmlEl.current.scrollLeft = menuHtmlEls.current[initialCurrentItem].offsetLeft - winWidth / 2 + menuHtmlEls.current[initialCurrentItem].offsetWidth / 2;
   }, [initialCurrentItem])
 
   const classes = createHeaderScrollStyles({ menuLeftIndent, menuRightIndent, background: theme.background, color: theme.color });

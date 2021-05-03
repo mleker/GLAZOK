@@ -23,9 +23,16 @@ import { Route, Switch } from 'react-router-dom';
 import { Loading } from './components/loading/Loading';
 import { Error } from './components/error/Error';
 
-global.maxWidth = 690;
-global.minWidth = 360;
-global.minHeight = 640;
+global.maxWidth = 1055;
+global.width1 = 800;
+global.width2 = 760;
+global.width3 = 500;
+global.minWidth = 320;
+
+global.maxHeight = 640;
+global.height1 = 568;
+global.height2 = 500;
+global.minHeight = 320;
 
 jss.createStyleSheet({
   '@font-face': {
@@ -59,6 +66,8 @@ jss.createStyleSheet({
       height: '100%',
       margin: 0,
       padding: 0,
+      minWidth: global.minWidth,
+      minHeight: global.minHeight,  
     },
 
     a: {
@@ -104,7 +113,6 @@ export const App = () => {
   const [categories, setCategories] = React.useState(null);
   const [posts, setPosts] = React.useState(null);
   const [error, setError] = React.useState();
-  const [, setWinWidth] = React.useState(window.innerWidth);
 
   let nulls = [];
   let sortedCategories = categories && categories.slice();
@@ -118,12 +126,6 @@ export const App = () => {
 
   sortedCategories && sortedCategories.sort((a, b) => a['priority'] > b['priority'] ? 1 : -1);
   sortedCategories = sortedCategories && nulls && sortedCategories.concat(nulls);
-
-  React.useEffect(() => {
-    const handleResize = () => setWinWidth(window.innerWidth);
-    window.addEventListener('resize', handleResize);
-    return () => window.removeEventListener('resize', handleResize);
-  })
 
   React.useEffect(() => {
     getCategories()

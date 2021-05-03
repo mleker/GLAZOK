@@ -20,8 +20,10 @@ const createRootPageStyles = createUseStyles(() => ({
         color: color,
         backgroundColor: background,
         overflow: 'hidden',
-        minHeight: 640,
         position: 'relative',
+        minWidth: global.minWidth,
+        minHeight: global.minHeight,
+        justifyContent: 'space-between',
     }),
 
     coverImage: {
@@ -35,7 +37,7 @@ const createRootPageStyles = createUseStyles(() => ({
         height: '100%',
     },
 
-    [`@media (max-width: ${global.maxWidth}px)`]: {
+    [`@media (max-width: ${global.width3}px) and (min-height: ${global.height1}px)`]: {
 
         rootPage: () => ({
             justifyContent: 'start',
@@ -50,6 +52,7 @@ export const RootPage = ({ categories, posts }) => {
     let location = useLocation();
     let { path } = useRouteMatch();
     const [winWidth, setWinWidth] = React.useState(window.innerWidth);
+    const [winHeight, setWinHeight] = React.useState(window.innerHeight);
     const [readMode, setReadMode] = React.useState(false);
     const [initialCurrentItem, setInitialCurrentItem] = React.useState(0);
     const pathname = location.pathname.replace(/\//, '');
@@ -57,12 +60,19 @@ export const RootPage = ({ categories, posts }) => {
     let yDown = null;
 
     React.useEffect(() => {
-        const handleResize = () => setWinWidth(window.innerWidth);
+        
+        const handleResize = () => {
+            setWinWidth(window.innerWidth);
+            setWinHeight(window.innerHeight);
+        };
+
         window.addEventListener('resize', handleResize);
-        if (winWidth <= global.maxWidth) {
+
+        if (winWidth <= global.width3) {
             window.addEventListener('touchstart', handleTouchStart, false);
             window.addEventListener('touchmove', handleTouchMove, false);
         }
+
         return () => {
             window.removeEventListener('resize', handleResize);
             window.removeEventListener('touchstart', handleTouchStart);
@@ -132,7 +142,8 @@ export const RootPage = ({ categories, posts }) => {
         <ThemeContext.Consumer>
             {({ setTheme }) => (
                 <div className={classes.rootPage}>
-                    {winWidth > global.maxWidth && location.pathname !== createAboutUrl() && (
+
+                    {winWidth > global.width3 && location.pathname !== createAboutUrl() && (
                         <HeaderScroll
                             categories={categories}
                             initialCurrentItem={initialCurrentItem}
@@ -140,7 +151,15 @@ export const RootPage = ({ categories, posts }) => {
                         />
                     )}
 
-                    { winWidth <= global.maxWidth && (
+                    { winWidth <= global.width3 && winHeight < global.height1 && (
+                        <HeaderScroll
+                            categories={categories}
+                            initialCurrentItem={initialCurrentItem}
+                            onMenuClick={onMenuClick}
+                        />
+                    )}
+
+                    { winWidth <= global.width3 && winHeight >= global.height1 && (
                         <HeaderSlide
                             categories={categories}
                             initialCurrentItem={initialCurrentItem}
@@ -148,6 +167,7 @@ export const RootPage = ({ categories, posts }) => {
                             withArrows={pathname !== 'about'}
                         />
                     )}
+
                     <Switch location={location}>
                         <Route path={createAboutUrl()} component={AboutPage} />
                         {categories.map((category, i) =>
