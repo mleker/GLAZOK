@@ -14,8 +14,6 @@ const createFooterStyles = createUseStyles(() => ({
     left: '50%',
     bottom: 0,
     margin: '0 auto',
-    position: 'absolute',
-    transform: 'translate(-50%)',
     width: 300,
     color: color,
     zIndex: 10,
@@ -32,7 +30,7 @@ const createFooterStyles = createUseStyles(() => ({
     paddingLeft: 15,
     paddingRight: 15,
     cursor: 'pointer',
-    '&:hover, &:active': {
+    '&:hover': {
       opacity: 0.5,
     },
     borderBottom: `2px solid transparent`,
@@ -81,20 +79,26 @@ const createFooterStyles = createUseStyles(() => ({
     extend: 'inputMsg',
     color: 'green',
   },
-  
+
+  staticFooter: {
+    position: 'static',
+    transform: 'none',
+  },
+
+  absoluteFooter: {
+    position: 'absolute',
+    transform: 'translate(-50%)',
+  },
 
   [`@media (max-height: ${global.maxHeight}px)`]: {
     footer: () => ({
       fontSize: 12,
       paddingBottom: 5,
-      position: 'static',
-      transform: 'none',
     }),
   },
-
 }));
 
-export const Footer = () => {
+export const Footer = ({positionStatic = false}) => {
   const { theme } = React.useContext(ThemeContext);
   const [winWidth, setWinWidth] = React.useState(window.innerWidth);
   const [winHeight, setWinHeight] = React.useState(window.innerHeight);
@@ -123,7 +127,7 @@ export const Footer = () => {
 
   return (
     (winWidth > global.width3 || winHeight < global.height1) && (
-      <div className={classes.footer}>
+      <div className={classNames(classes.footer, positionStatic ? classes.staticFooter : classes.absoluteFooter)}>
         <div className={classes.row}>
           <a
             className={classes.item}

@@ -15,7 +15,7 @@ const createHeaderScrollStyles = createUseStyles(() => ({
     flexShrink: 0,
     textTransform: 'uppercase',
     whiteSpace: 'nowrap',
-    overflowX: 'auto',
+    overflowX: 'scroll',
     '-webkit-overflow-scrolling': 'touch',
     '-ms-overflow-style': '-ms-autohiding-scrollbar',
     '&::-webkit-scrollbar': {
@@ -49,7 +49,7 @@ const createHeaderScrollStyles = createUseStyles(() => ({
   item: {
     marginRight: 30,
     cursor: 'pointer',
-    '&:hover, &:active': {
+    '&:hover': {
       opacity: 0.5,
     }
   },
@@ -112,8 +112,7 @@ export const HeaderScroll = ({ categories, initialCurrentItem, onMenuClick }) =>
   const [winWidth, setWinWidth] = React.useState(window.innerWidth);
   const [winHeight, setWinHeight] = React.useState(window.innerHeight);
 
-  const onMouseWheel = (e) => {
-
+  const handleScroll = (e) => {
     scrollHorizontally(e, menuWrapperHtmlEl.current);
     const newCurrentItem = getCurrentItem(menuHtmlEls.current, winWidth / 2);
     if (currentItem !== newCurrentItem) {
@@ -129,10 +128,12 @@ export const HeaderScroll = ({ categories, initialCurrentItem, onMenuClick }) =>
     }
 
     window.addEventListener('resize', handleResize);
-    window.addEventListener('mousewheel', onMouseWheel, false);
+    window.addEventListener('touchmove', handleScroll, false);
+    window.addEventListener('mousewheel', handleScroll, false);
     return () => {
       window.removeEventListener('resize', handleResize);
-      window.removeEventListener('mousewheel', onMouseWheel);
+      window.removeEventListener('touchmove', handleScroll);
+      window.removeEventListener('mousewheel', handleScroll);
     }
   })
 

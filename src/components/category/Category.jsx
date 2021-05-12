@@ -111,20 +111,6 @@ const createCategoryStyles = createUseStyles(() => ({
     textAlign: 'center',
   }),
 
-  playButton: {
-    '&:hover, &:active': {
-      color: 'rgba(0,0,0,0.5)',
-    },
-    cursor: 'pointer',
-  },
-
-  readButton: {
-    '&:hover, &:active': {
-      color: 'rgba(255,255,255,0.5)',
-    },
-    cursor: 'pointer',
-  },
-
   frameCenterLink: ({ color }) => ({
     fontSize: 57,
     position: 'absolute',
@@ -132,7 +118,7 @@ const createCategoryStyles = createUseStyles(() => ({
     left: '50%',
     transform: 'translateY(-50%) translate(-50%)',
     color: color,
-    '&:hover, &:active': {
+    '&:hover': {
       opacity: 0.5,
     },
     cursor: 'pointer',
@@ -193,6 +179,20 @@ const createCategoryStyles = createUseStyles(() => ({
     top: '50%',
     left: '50%',
     transform: 'translate(-50%)',
+  },
+
+  playButton: {
+    '&:hover': {
+      color: 'rgba(0,0,0,0.5)',
+    },
+    cursor: 'pointer',
+  },
+
+  readButton: {
+    '&:hover': {
+      color: 'rgba(255,255,255,0.5)',
+    },
+    cursor: 'pointer',
   },
 
   [`@media (max-height: ${global.maxHeight}px)`]: {
@@ -324,7 +324,7 @@ const createCategoryStyles = createUseStyles(() => ({
 
     frameCenterLink: () => ({
       fontSize: 40,
-      '&:hover, &:active': {
+      '&:hover': {
         opacity: 1,
       },
     }),
@@ -339,13 +339,13 @@ const createCategoryStyles = createUseStyles(() => ({
     }),
 
     playButton: {
-      '&:hover, &:active': {
+      '&:hover': {
         color: 'inherit',
       },
     },
 
     readButton: {
-      '&:hover, &:active': {
+      '&:hover': {
         color: 'inherit',
       },
     },
@@ -421,6 +421,18 @@ const createCategoryStyles = createUseStyles(() => ({
     frameCenterLink: () => ({
       fontSize: 33,
     }),
+
+    playButton: {
+      '&:hover': {
+        color: 'inherit',
+      },
+    },
+
+    readButton: {
+      '&:hover': {
+        color: 'inherit',
+      },
+    },
 
   },
 

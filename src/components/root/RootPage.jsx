@@ -189,7 +189,7 @@ export const RootPage = ({ categories, posts }) => {
                         )}
                         <Redirect exact from={createHomeUrl()} to={categories[0].custom_url} />
                     </Switch>
-                    <Footer />
+                    <Footer positionStatic={winHeight <= global.maxHeight && location.pathname !== createAboutUrl()} />
                 </div>
             )}
         </ThemeContext.Consumer>

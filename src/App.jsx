@@ -27,12 +27,12 @@ global.maxWidth = 1055;
 global.width1 = 800;
 global.width2 = 760;
 global.width3 = 500;
-global.minWidth = 320;
+global.minWidth = 300;
 
 global.maxHeight = 640;
-global.height1 = 568;
+global.height1 = 550;
 global.height2 = 500;
-global.minHeight = 320;
+global.minHeight = 300;
 
 jss.createStyleSheet({
   '@font-face': {

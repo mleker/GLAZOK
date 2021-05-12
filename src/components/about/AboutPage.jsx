@@ -66,6 +66,12 @@ const createAboutPageStyles = createUseStyles(() => ({
     textDecoration: 'underline',
   },
 
+  [`@media (max-height: ${global.maxHeight}px)`]: {
+    aboutPage: () => ({
+      paddingBottom: 50,
+    }),
+  },
+
   [`@media (max-width: ${global.width3}px)`]: {
     aboutPage: () => ({
       flexDirection: 'column',
