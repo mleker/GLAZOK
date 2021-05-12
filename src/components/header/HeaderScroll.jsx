@@ -87,8 +87,6 @@ const scrollHorizontally = (e, itemsWrapper) => {
   if (e.wheelDeltaY > 9 || e.wheelDeltaY < -9) {
     const delta = Math.max(-1, Math.min(1, e.wheelDeltaY));
     itemsWrapper.scrollLeft -= delta * 5;
-  } else {
-    e.preventDefault();
   }
 }
 
@@ -138,12 +136,16 @@ export const HeaderScroll = ({ categories, initialCurrentItem, onMenuClick }) =>
   })
 
   React.useEffect(() => {
-    setMenuLeftIndent(winWidth / 2 - (menuHtmlEls.current[0].offsetLeft - menuLeftIndent) - menuHtmlEls.current[0].offsetWidth / 2);
-    setMenuRightIndent(winWidth / 2 - menuHtmlEls.current[Object.keys(menuHtmlEls.current).length - 1].offsetWidth / 2 - 30 - menuRightIndent);
+    console.log('menuHtmlEls.current[initialCurrentItem].offsetLeft', menuHtmlEls.current[initialCurrentItem].offsetLeft);
+    console.log('menuHtmlEls.current[0].offsetWidth', menuHtmlEls.current[0].offsetWidth);
+    setMenuLeftIndent(winWidth / 2 - menuHtmlEls.current[0].offsetWidth / 2);
+    setMenuRightIndent(winWidth / 2 - menuHtmlEls.current[Object.keys(menuHtmlEls.current).length - 1].offsetWidth / 2 - 30);
+    menuWrapperHtmlEl.current.scrollLeft = menuHtmlEls.current[currentItem].offsetLeft + menuHtmlEls.current[currentItem].offsetWidth / 2 - winWidth / 2;
   }, [winWidth, winHeight])
 
   React.useEffect(() => {
-    menuWrapperHtmlEl.current.scrollLeft = menuHtmlEls.current[initialCurrentItem].offsetLeft - winWidth / 2 + menuHtmlEls.current[initialCurrentItem].offsetWidth / 2;
+    setCurrentItem(initialCurrentItem);
+    menuWrapperHtmlEl.current.scrollLeft = menuHtmlEls.current[initialCurrentItem].offsetLeft + menuHtmlEls.current[initialCurrentItem].offsetWidth / 2 - winWidth / 2;
   }, [initialCurrentItem])
 
   const classes = createHeaderScrollStyles({ menuLeftIndent, menuRightIndent, background: theme.background, color: theme.color });
