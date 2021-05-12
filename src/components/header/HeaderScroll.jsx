@@ -81,6 +81,14 @@ const createHeaderScrollStyles = createUseStyles(() => ({
       fontSize: 30,
     },
   },
+
+  [`@media (max-height: ${global.height2}px)`]: {
+    item: {
+      '&:hover': {
+        opacity: 1,
+      }
+    },
+  }
 }));
 
 const scrollHorizontally = (e, itemsWrapper) => {

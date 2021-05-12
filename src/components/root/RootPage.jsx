@@ -68,7 +68,7 @@ export const RootPage = ({ categories, posts }) => {
 
         window.addEventListener('resize', handleResize);
 
-        if (winWidth <= global.width3) {
+        if (winWidth <= global.width3 || winHeight <= global.height2) {
             window.addEventListener('touchstart', handleTouchStart, false);
             window.addEventListener('touchmove', handleTouchMove, false);
         }
