@@ -144,8 +144,6 @@ export const HeaderScroll = ({ categories, initialCurrentItem, onMenuClick }) =>
   })
 
   React.useEffect(() => {
-    console.log('menuHtmlEls.current[initialCurrentItem].offsetLeft', menuHtmlEls.current[initialCurrentItem].offsetLeft);
-    console.log('menuHtmlEls.current[0].offsetWidth', menuHtmlEls.current[0].offsetWidth);
     setMenuLeftIndent(winWidth / 2 - menuHtmlEls.current[0].offsetWidth / 2);
     setMenuRightIndent(winWidth / 2 - menuHtmlEls.current[Object.keys(menuHtmlEls.current).length - 1].offsetWidth / 2 - 30);
     menuWrapperHtmlEl.current.scrollLeft = menuHtmlEls.current[currentItem].offsetLeft + menuHtmlEls.current[currentItem].offsetWidth / 2 - winWidth / 2;
@@ -153,6 +151,7 @@ export const HeaderScroll = ({ categories, initialCurrentItem, onMenuClick }) =>
 
   React.useEffect(() => {
     setCurrentItem(initialCurrentItem);
+    history.push(categories[initialCurrentItem].custom_url);
     menuWrapperHtmlEl.current.scrollLeft = menuHtmlEls.current[initialCurrentItem].offsetLeft + menuHtmlEls.current[initialCurrentItem].offsetWidth / 2 - winWidth / 2;
   }, [initialCurrentItem])
 
