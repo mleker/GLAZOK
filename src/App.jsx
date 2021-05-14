@@ -31,7 +31,7 @@ global.minWidth = 300;
 
 global.maxHeight = 640;
 global.height1 = 550;
-global.height2 = 480;
+global.height2 = 420;
 global.minHeight = 300;
 
 jss.createStyleSheet({
