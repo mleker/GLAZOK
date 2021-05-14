@@ -151,7 +151,7 @@ export const RootPage = ({ categories, posts }) => {
                         />
                     )}
 
-                    { winWidth <= global.width3 && winHeight < global.height1 && (
+                    { winWidth <= global.width3 && winHeight < global.height2 && (
                         <HeaderScroll
                             categories={categories}
                             initialCurrentItem={initialCurrentItem}
@@ -159,7 +159,7 @@ export const RootPage = ({ categories, posts }) => {
                         />
                     )}
 
-                    { winWidth <= global.width3 && winHeight >= global.height1 && (
+                    { winWidth <= global.width3 && winHeight >= global.height2 && (
                         <HeaderSlide
                             categories={categories}
                             initialCurrentItem={initialCurrentItem}

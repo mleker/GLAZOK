@@ -126,7 +126,7 @@ export const Footer = ({positionStatic = false}) => {
   const handleClick = (event) => inputVisible && !inputWrapperHtmlEl.current.contains(event.target) && setInputVisible(false);
 
   return (
-    (winWidth > global.width3 || winHeight < global.height1) && (
+    (winWidth > global.width3 || winHeight < global.height2) && (
       <div className={classNames(classes.footer, positionStatic ? classes.staticFooter : classes.absoluteFooter)}>
         <div className={classes.row}>
           <a
