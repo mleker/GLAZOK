@@ -161,7 +161,7 @@ const createHeaderSlideStyles = createUseStyles(() => ({
     },
 }));
 
-export const HeaderSlide = ({ withArrows = true, categories, initialCurrentItem, onMenuClick }) => {
+export const HeaderSlide = ({ withCategories = true, categories, initialCurrentItem, onMenuClick }) => {
     const history = useHistory();
     const { theme } = React.useContext(ThemeContext);
     const [menuOpened, setMenuOpened] = React.useState(false);
@@ -195,16 +195,16 @@ export const HeaderSlide = ({ withArrows = true, categories, initialCurrentItem,
         }
     }
 
-    const handleChangeInputValue = (event) => setInputValue(event.target.value);
-
     React.useEffect(() => {
-        history.push(categories[initialCurrentItem].custom_url);
+        withCategories && history.push(categories[initialCurrentItem].custom_url);
     }, [initialCurrentItem]);
+
+    const handleChangeInputValue = (event) => setInputValue(event.target.value);
 
     return (
         <div className={classNames(classes.header, menuOpened && classes.headerWithMenu)}>
             <div className={classes.cursor}>
-                {!menuOpened && withArrows && (
+                {!menuOpened && withCategories && (
                     <span
                         className={classes.arrow}
                         onClick={onLeftClick}
@@ -215,7 +215,7 @@ export const HeaderSlide = ({ withArrows = true, categories, initialCurrentItem,
                 <span className={classes.bracket}>{"("}</span>
                 <span className={classes.blinkers}>{"༗"}</span>
                 <span className={classes.bracket}>{")"}</span>
-                {!menuOpened && withArrows && (
+                {!menuOpened && withCategories && (
                     <span
                         className={classes.arrow}
                         onClick={onRightClick}

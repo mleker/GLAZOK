@@ -72,7 +72,7 @@ const createAboutPageStyles = createUseStyles(() => ({
     }),
   },
 
-  [`@media (max-width: ${global.width3}px)`]: {
+  [`@media (max-width: ${global.width3}px) and (min-height: ${global.height2}px)`]: {
     aboutPage: () => ({
       flexDirection: 'column',
       paddingBottom: 0,
@@ -92,10 +92,14 @@ const createAboutPageStyles = createUseStyles(() => ({
 export const AboutPage = () => {
   const { theme, setTheme } = React.useContext(ThemeContext);
   const [winWidth, setWinWidth] = React.useState(window.innerWidth);
+  const [winHeight, setWinHeight] = React.useState(window.innerHeight);
   const [ruLang, setRuLang] = React.useState(false);
 
   React.useEffect(() => {
-    const handleResize = () => setWinWidth(window.innerWidth);
+    const handleResize = () => {
+      setWinWidth(window.innerWidth);
+      setWinHeight(window.innerHeight);
+    }
     window.addEventListener('resize', handleResize);
     return () => window.removeEventListener('resize', handleResize);
   })
@@ -108,7 +112,7 @@ export const AboutPage = () => {
 
   return (
       <div className={classes.aboutPage}>
-        {winWidth <= global.width3 && (
+        {winWidth <= global.width3 && winHeight >= global.height2 && (
           <>
             <div className={classes.title}>
               {'About'}
@@ -122,7 +126,7 @@ export const AboutPage = () => {
           </>
         )}
         <div className={classes.content}>
-          {(ruLang || winWidth > global.width3) && (
+          {(ruLang || winWidth > global.width3 || winHeight < global.height2) && (
             <div className={classNames(classes.column, classes.columnLeft)}>
               {'ГЛАЗОК (༗) —  это нестабильная видеоплатформа, медиа-мираж, эффект преломления визуальных потоков в пространстве институциональных и технологических связей разной плотности. Мы показываем фильмы, лекции, стримы и все, что посчитаем любопытным.'}
               <br />
@@ -192,7 +196,7 @@ export const AboutPage = () => {
             </div>
           )}
 
-          {(!ruLang || winWidth > global.width3) && (
+          {(!ruLang || winWidth > global.width3 || winHeight < global.height2) && (
             <div className={classNames(classes.column, classes.columnRight)}>
               {'GLAZOK (༗) is an unstable video platform, a media-mirage, a deflection effect, produced by visual streams running through space with varying densities of institutional and technological relations. We screen films, lectures, live-feeds, and everything that we find curious.'}
               <br />

@@ -43,6 +43,12 @@ const createRootPageStyles = createUseStyles(() => ({
             justifyContent: 'start',
         }),
     },
+
+    [`@media (max-width: ${global.width2}px) and (max-height: ${global.height2}px)`]: {
+        rootPage: () => ({
+            overflow: 'auto',
+        }),
+    }
 }));
 
 const getTouches = (evt) => evt.touches;
@@ -151,7 +157,7 @@ export const RootPage = ({ categories, posts }) => {
                         />
                     )}
 
-                    { winWidth <= global.width3 && winHeight < global.height2 && (
+                    { winWidth <= global.width3 && winHeight < global.height2 && location.pathname !== createAboutUrl() && (
                         <HeaderScroll
                             categories={categories}
                             initialCurrentItem={initialCurrentItem}
@@ -164,7 +170,7 @@ export const RootPage = ({ categories, posts }) => {
                             categories={categories}
                             initialCurrentItem={initialCurrentItem}
                             onMenuClick={onMenuClick}
-                            withArrows={pathname !== 'about'}
+                            withCategories={pathname !== 'about'}
                         />
                     )}
 
