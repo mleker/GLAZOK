@@ -25,7 +25,7 @@ const createCategoryStyles = createUseStyles(() => ({
     flexDirection: 'column',
     justifyContent: 'center',
     minWidth: global.minWidth,
-    height: '100%',
+    flexGrow: 1,
   }),
 
   coverImage: {
@@ -44,7 +44,7 @@ const createCategoryStyles = createUseStyles(() => ({
     display: 'flex',
     flexDirection: 'column',
     justifyContent: 'center',
-    height: '100%',
+    flexGrow: 1,
   },
 
   twoColumns: ({ background }) => ({
@@ -313,6 +313,7 @@ const createCategoryStyles = createUseStyles(() => ({
   [`@media (max-width: ${global.width3}px)`]: {
 
     playModeBlock: () => ({
+      height: '100%',
       position: 'absolute',
       left: 0,
       right: 0,

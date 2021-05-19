@@ -1,11 +1,11 @@
 import React from 'react';
 import { createUseStyles } from 'react-jss';
-import { Link } from '../link/Link';
 import { createAboutUrl, createHomeUrl } from '../../utils/AppUrlCreators';
 import { ThemeContext, mailchimpUrl } from '../../App';
 import { useLocation } from 'react-router-dom';
 import MailchimpSubscribe from 'react-mailchimp-subscribe';
 import classNames from 'classnames';
+import { useHistory } from 'react-router-dom';
 
 const createFooterStyles = createUseStyles(() => ({
   footer: ({ color }) => ({
@@ -98,7 +98,8 @@ const createFooterStyles = createUseStyles(() => ({
   },
 }));
 
-export const Footer = ({positionStatic = false}) => {
+export const Footer = ({ positionStatic = false }) => {
+  const history = useHistory();
   const { theme } = React.useContext(ThemeContext);
   const [winWidth, setWinWidth] = React.useState(window.innerWidth);
   const [winHeight, setWinHeight] = React.useState(window.innerHeight);
@@ -121,6 +122,11 @@ export const Footer = ({positionStatic = false}) => {
       window.removeEventListener('click', handleClick);
     }
   })
+
+  const clearAllHandlers = () => {
+    setInputValue('');
+    setInputVisible(false);
+  }
 
   const handleChangeInputValue = (event) => setInputValue(event.target.value);
   const handleClick = (event) => inputVisible && !inputWrapperHtmlEl.current.contains(event.target) && setInputVisible(false);
@@ -207,8 +213,28 @@ export const Footer = ({positionStatic = false}) => {
 
           {!inputVisible && (
             location.pathname === createAboutUrl()
-              ? (<Link className={classes.item} to={createHomeUrl()}>{'Main'}</Link>)
-              : (<Link className={classes.item} to={createAboutUrl()}>{'About'}</Link>)
+              ? (
+                <div
+                  className={classes.item}
+                  onClick={() => {
+                    history.push(createHomeUrl());
+                    clearAllHandlers();
+                  }}
+                >
+                  {'Main'}
+                </div>
+              )
+              : (
+                <div
+                  className={classes.item}
+                  onClick={() => {
+                    history.push(createAboutUrl());
+                    clearAllHandlers();
+                  }}
+                >
+                  {'About'}
+                </div>
+              )
           )}
 
         </div>

@@ -150,6 +150,7 @@ export const HeaderScroll = ({ categories, initialCurrentItem, onMenuClick }) =>
   }, [winWidth, winHeight])
 
   React.useEffect(() => {
+    console.log('initialCurrentItem', initialCurrentItem);
     setCurrentItem(initialCurrentItem);
     history.push(categories[initialCurrentItem].custom_url);
     menuWrapperHtmlEl.current.scrollLeft = menuHtmlEls.current[initialCurrentItem].offsetLeft + menuHtmlEls.current[initialCurrentItem].offsetWidth / 2 - winWidth / 2;

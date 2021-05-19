@@ -23,7 +23,6 @@ const createRootPageStyles = createUseStyles(() => ({
         position: 'relative',
         minWidth: global.minWidth,
         minHeight: global.minHeight,
-        justifyContent: 'space-between',
     }),
 
     coverImage: {
@@ -64,6 +63,8 @@ export const RootPage = ({ categories, posts }) => {
     const pathname = location.pathname.replace(/\//, '');
     let xDown = null;
     let yDown = null;
+
+    console.log('location', location);
 
     React.useEffect(() => {
         
