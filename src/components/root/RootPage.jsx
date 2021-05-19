@@ -37,7 +37,7 @@ const createRootPageStyles = createUseStyles(() => ({
         height: '100%',
     },
 
-    [`@media (max-width: ${global.width3}px) and (min-height: ${global.height1}px)`]: {
+    [`@media (max-width: ${global.width3}px) and (min-height: ${global.height2}px)`]: {
 
         rootPage: () => ({
             justifyContent: 'start',

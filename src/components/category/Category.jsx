@@ -476,7 +476,7 @@ export const Category = ({ category, post, readMode, onSetReadMode, onSetPlayMod
 
   return (
     <>
-      {winWidth <= global.width3 && winHeight >= global.height1 && (
+      {winWidth <= global.width3 && winHeight >= global.height2 && (
         <div className={classes.title}>
           {category.name}
         </div>
