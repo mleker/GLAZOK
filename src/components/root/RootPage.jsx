@@ -54,7 +54,6 @@ export const RootPage = ({ categories, posts }) => {
     let yDown = null;
 
     React.useEffect(() => {
-
         const handleResize = () => {
             setWinWidth(window.innerWidth);
             setWinHeight(window.innerHeight);
@@ -120,14 +119,18 @@ export const RootPage = ({ categories, posts }) => {
             if (xDiff > 0) {
                 if (initialCurrentItem === categories.length - 1) {
                     setInitialCurrentItem(0);
+                    history.push(categories[0].custom_url);
                 } else {
                     setInitialCurrentItem(initialCurrentItem + 1);
+                    history.push(categories[initialCurrentItem + 1].custom_url);
                 }
             } else {
                 if (initialCurrentItem === 0) {
                     setInitialCurrentItem(categories.length - 1);
+                    history.push(categories[categories.length - 1].custom_url);
                 } else {
                     setInitialCurrentItem(initialCurrentItem - 1);
+                    history.push(categories[initialCurrentItem - 1].custom_url);
                 }
             }
         }
