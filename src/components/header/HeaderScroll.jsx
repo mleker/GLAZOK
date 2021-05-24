@@ -116,7 +116,7 @@ export const HeaderScroll = ({ categories, initialCurrentItem, onMenuClick }) =>
   const menuWrapperHtmlEl = React.useRef();
   const [currentItem, setCurrentItem] = React.useState(initialCurrentItem);
   const [winWidth, setWinWidth] = React.useState(window.innerWidth);
-  const [winHeight, setWinHeight] = React.useState(window.innerHeight);
+  const [winHeight, setWinHeight] = React.useState(window.innerHeight); 
 
   const handleScroll = (e) => {
     scrollHorizontally(e, menuWrapperHtmlEl.current);
@@ -150,9 +150,7 @@ export const HeaderScroll = ({ categories, initialCurrentItem, onMenuClick }) =>
   }, [winWidth, winHeight])
 
   React.useEffect(() => {
-    console.log('initialCurrentItem', initialCurrentItem);
     setCurrentItem(initialCurrentItem);
-    history.push(categories[initialCurrentItem].custom_url);
     menuWrapperHtmlEl.current.scrollLeft = menuHtmlEls.current[initialCurrentItem].offsetLeft + menuHtmlEls.current[initialCurrentItem].offsetWidth / 2 - winWidth / 2;
   }, [initialCurrentItem])
 
@@ -170,10 +168,7 @@ export const HeaderScroll = ({ categories, initialCurrentItem, onMenuClick }) =>
           <span
             key={i}
             ref={(el) => menuHtmlEls.current[i] = el}
-            onClick={() => {
-              onMenuClick(i);
-              history.push(categories[i].custom_url);
-            }}
+            onClick={() => onMenuClick(i)}
             className={classes.item}
           >
             {replaceSpacesWithUnderscore(item)}

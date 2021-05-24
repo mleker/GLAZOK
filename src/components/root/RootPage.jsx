@@ -1,4 +1,5 @@
 import React from 'react';
+import { useHistory } from 'react-router-dom';
 import { createUseStyles } from 'react-jss';
 import { HeaderScroll } from '../header/HeaderScroll';
 import { HeaderSlide } from '../header/HeaderSlide';
@@ -14,7 +15,7 @@ const createRootPageStyles = createUseStyles(() => ({
 
     rootPage: ({ background, color }) => ({
         width: '100%',
-        height: '100vh',
+        height: '100%',
         display: 'flex',
         flexDirection: 'column',
         color: color,
@@ -35,19 +36,6 @@ const createRootPageStyles = createUseStyles(() => ({
         width: '100%',
         height: '100%',
     },
-
-    [`@media (max-width: ${global.width3}px) and (min-height: ${global.height2}px)`]: {
-
-        rootPage: () => ({
-            justifyContent: 'start',
-        }),
-    },
-
-    [`@media (max-width: ${global.width2}px) and (max-height: ${global.height2}px)`]: {
-        rootPage: () => ({
-            overflow: 'auto',
-        }),
-    }
 }));
 
 const getTouches = (evt) => evt.touches;
@@ -55,6 +43,7 @@ const getTouches = (evt) => evt.touches;
 export const RootPage = ({ categories, posts }) => {
     const { theme } = React.useContext(ThemeContext);
     let location = useLocation();
+    const history = useHistory();
     let { path } = useRouteMatch();
     const [winWidth, setWinWidth] = React.useState(window.innerWidth);
     const [winHeight, setWinHeight] = React.useState(window.innerHeight);
@@ -64,10 +53,8 @@ export const RootPage = ({ categories, posts }) => {
     let xDown = null;
     let yDown = null;
 
-    console.log('location', location);
-
     React.useEffect(() => {
-        
+
         const handleResize = () => {
             setWinWidth(window.innerWidth);
             setWinHeight(window.innerHeight);
@@ -94,6 +81,16 @@ export const RootPage = ({ categories, posts }) => {
             }
         });
     }, [categories]);
+
+    React.useEffect(() => {
+        if (location.pathname !== createAboutUrl() && location.pathname !== createHomeUrl() &&  pathname !== categories[initialCurrentItem].custom_url) {
+            categories && categories.map((item, i) => {
+                if (item.custom_url === pathname) {
+                    setInitialCurrentItem(i)
+                }
+            });
+        }
+    }, [location]);
 
     React.useEffect(() => {
         posts.forEach((post) => {
@@ -141,6 +138,7 @@ export const RootPage = ({ categories, posts }) => {
 
     const onMenuClick = (i) => {
         setInitialCurrentItem(i);
+        history.push(categories[i].custom_url);
     }
 
     const classes = createRootPageStyles({ background: theme.background, color: theme.color });
@@ -149,14 +147,6 @@ export const RootPage = ({ categories, posts }) => {
         <ThemeContext.Consumer>
             {({ setTheme }) => (
                 <div className={classes.rootPage}>
-
-                    {winWidth > global.width3 && location.pathname !== createAboutUrl() && (
-                        <HeaderScroll
-                            categories={categories}
-                            initialCurrentItem={initialCurrentItem}
-                            onMenuClick={onMenuClick}
-                        />
-                    )}
 
                     { winWidth <= global.width3 && winHeight < global.height2 && location.pathname !== createAboutUrl() && (
                         <HeaderScroll
@@ -171,7 +161,15 @@ export const RootPage = ({ categories, posts }) => {
                             categories={categories}
                             initialCurrentItem={initialCurrentItem}
                             onMenuClick={onMenuClick}
-                            withCategories={pathname !== 'about'}
+                            withCategories={location.pathname !== createAboutUrl()}
+                        />
+                    )}
+
+                    {winWidth > global.width3 && location.pathname !== createAboutUrl() && (
+                        <HeaderScroll
+                            categories={categories}
+                            initialCurrentItem={initialCurrentItem}
+                            onMenuClick={onMenuClick}
                         />
                     )}
 
@@ -194,8 +192,9 @@ export const RootPage = ({ categories, posts }) => {
                                 />
                             </Route>
                         )}
-                        <Redirect exact from={createHomeUrl()} to={categories[0].custom_url} />
+                        <Redirect from={createHomeUrl()} to={categories[0].custom_url} />
                     </Switch>
+                    <Redirect from={createHomeUrl()} to={categories[0].custom_url} />
                     <Footer positionStatic={winHeight <= global.maxHeight && location.pathname !== createAboutUrl()} />
                 </div>
             )}

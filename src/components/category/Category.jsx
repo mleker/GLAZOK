@@ -24,9 +24,15 @@ const createCategoryStyles = createUseStyles(() => ({
     display: 'flex',
     flexDirection: 'column',
     justifyContent: 'center',
-    minWidth: global.minWidth,
     flexGrow: 1,
   }),
+
+  readModeBlock: {
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'center',
+    flexGrow: 1,
+  },
 
   coverImage: {
     position: 'absolute',
@@ -37,14 +43,6 @@ const createCategoryStyles = createUseStyles(() => ({
     objectFit: 'cover',
     width: '100%',
     height: '100%',
-  },
-
-  readModeBlock: {
-    minWidth: global.minWidth,
-    display: 'flex',
-    flexDirection: 'column',
-    justifyContent: 'center',
-    flexGrow: 1,
   },
 
   twoColumns: ({ background }) => ({
@@ -198,12 +196,12 @@ const createCategoryStyles = createUseStyles(() => ({
   [`@media (max-height: ${global.maxHeight}px)`]: {
 
     frameWrapper: {
-      width: 600,
+      width: 540,
       marginBottom: 0,
     },
 
     textFrameWrapper: {
-      width: 600,
+      width: 540,
       marginBottom: 0,
     },
 
@@ -310,14 +308,7 @@ const createCategoryStyles = createUseStyles(() => ({
     }),
   },
 
-  [`@media (max-width: ${global.width3}px)`]: {
-
-    playModeBlock: () => ({
-      height: '100%',
-      position: 'absolute',
-      left: 0,
-      right: 0,
-    }),
+  [`@media (max-width: ${global.width3}px) and (min-height: ${global.height2 - 1}px)`]: {
 
     twoColumns: () => ({
       top: 140,
@@ -362,21 +353,13 @@ const createCategoryStyles = createUseStyles(() => ({
     },
 
     frameWrapper: {
-      position: 'absolute',
-      left: 0,
-      right: 0,
-      top: '52%',
       width: '100%',
-      transform: 'translateY(-50%) translateX(0)',
+      transform: 'translateY(-50px)',
     },
 
     textFrameWrapper: {
-      position: 'absolute',
-      left: 0,
-      right: 0,
-      top: '52%',
       width: '100%',
-      transform: 'translateY(-50%) translateX(0)',
+      transform: 'translateY(-50px)',
     },
 
     textFrameFirstColumn: {

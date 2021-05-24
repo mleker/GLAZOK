@@ -177,27 +177,19 @@ export const HeaderSlide = ({ withCategories = true, categories, initialCurrentI
 
     const onLeftClick = () => {
         if (initialCurrentItem === 0) {
-            onMenuClick(categories.length - 1);
-            history.push(categories[categories.length - 1].custom_url);
+            onMenuClick(categories.length - 1); 
         } else {
             onMenuClick(--initialCurrentItem);
-            history.push(categories[initialCurrentItem].custom_url);
         }
     }
 
     const onRightClick = () => {
         if (initialCurrentItem === categories.length - 1) {
             onMenuClick(0);
-            history.push(categories[0].custom_url);
         } else {
             onMenuClick(++initialCurrentItem);
-            history.push(categories[initialCurrentItem].custom_url);
         }
     }
-
-    React.useEffect(() => {
-        withCategories && history.push(categories[initialCurrentItem].custom_url);
-    }, [initialCurrentItem]);
 
     const handleChangeInputValue = (event) => setInputValue(event.target.value);
 
