@@ -177,7 +177,7 @@ export const HeaderSlide = ({ withCategories = true, categories, initialCurrentI
 
     const onLeftClick = () => {
         if (initialCurrentItem === 0) {
-            onMenuClick(categories.length - 1); 
+            onMenuClick(categories.length - 1);
         } else {
             onMenuClick(--initialCurrentItem);
         }

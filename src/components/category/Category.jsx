@@ -78,7 +78,7 @@ const createCategoryStyles = createUseStyles(() => ({
   frame: {
     position: 'relative',
     height: 0,
-    overflow: 'hidden',
+    // overflow: 'hidden',
     paddingBottom: '56%',
     backgroundColor: 'black',
     border: 'solid 2px white',

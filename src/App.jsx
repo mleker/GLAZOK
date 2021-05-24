@@ -24,7 +24,7 @@ import { Loading } from './components/loading/Loading';
 import { Error } from './components/error/Error';
 
 global.maxWidth = 1055;
-global.width1 = 800;
+global.width1 = 812;
 global.width2 = 760;
 global.width3 = 500;
 global.minWidth = 300;
@@ -67,7 +67,7 @@ jss.createStyleSheet({
       margin: 0,
       padding: 0,
       minWidth: global.minWidth,
-      minHeight: global.minHeight,  
+      minHeight: global.minHeight,
     },
 
     a: {
@@ -90,6 +90,12 @@ jss.createStyleSheet({
     '*': {
       boxSizing: 'border-box',
     },
+
+    [`@media (max-width: ${global.width1}px) and (max-height: ${global.width1}px)`]: {
+      body: {
+        overflow: 'auto',
+      },
+    }
   },
 }).attach();
 
@@ -150,7 +156,7 @@ export const App = () => {
   }
 
   return (
-    <ThemeContext.Provider value={{ theme, setTheme }}> 
+    <ThemeContext.Provider value={{ theme, setTheme }}>
       {sortedCategories && posts
         ? (
           <Switch>

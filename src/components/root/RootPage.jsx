@@ -20,7 +20,6 @@ const createRootPageStyles = createUseStyles(() => ({
         flexDirection: 'column',
         color: color,
         backgroundColor: background,
-        overflow: 'hidden',
         position: 'relative',
         minWidth: global.minWidth,
         minHeight: global.minHeight,
@@ -36,6 +35,8 @@ const createRootPageStyles = createUseStyles(() => ({
         width: '100%',
         height: '100%',
     },
+
+
 }));
 
 const getTouches = (evt) => evt.touches;
@@ -82,7 +83,7 @@ export const RootPage = ({ categories, posts }) => {
     }, [categories]);
 
     React.useEffect(() => {
-        if (location.pathname !== createAboutUrl() && location.pathname !== createHomeUrl() &&  pathname !== categories[initialCurrentItem].custom_url) {
+        if (location.pathname !== createAboutUrl() && location.pathname !== createHomeUrl() && pathname !== categories[initialCurrentItem].custom_url) {
             categories && categories.map((item, i) => {
                 if (item.custom_url === pathname) {
                     setInitialCurrentItem(i)
@@ -168,7 +169,7 @@ export const RootPage = ({ categories, posts }) => {
                         />
                     )}
 
-                    {winWidth > global.width3 && location.pathname !== createAboutUrl() && (
+                    { winWidth > global.width3 && location.pathname !== createAboutUrl() && (
                         <HeaderScroll
                             categories={categories}
                             initialCurrentItem={initialCurrentItem}
@@ -197,7 +198,6 @@ export const RootPage = ({ categories, posts }) => {
                         )}
                         <Redirect from={createHomeUrl()} to={categories[0].custom_url} />
                     </Switch>
-                    <Redirect from={createHomeUrl()} to={categories[0].custom_url} />
                     <Footer positionStatic={winHeight <= global.maxHeight && location.pathname !== createAboutUrl()} />
                 </div>
             )}
