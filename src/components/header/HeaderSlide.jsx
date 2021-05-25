@@ -71,15 +71,11 @@ const createHeaderSlideStyles = createUseStyles(() => ({
     }),
 
     burgerMenu: ({ background }) => ({
-        paddingRight: 20,
-        paddingLeft: 20,
         position: 'fixed',
-        top: 80,
+        top: 0,
         left: 0,
         right: 0,
         bottom: 0,
-        width: '100vw',
-        height: '100vh',
         backgroundColor: background,
         textAlign: 'center',
         textTransform: 'uppercase',
@@ -87,7 +83,7 @@ const createHeaderSlideStyles = createUseStyles(() => ({
 
     item: {
         display: 'block',
-        paddingTop: 20,
+        paddingBottom: 20,
         position: 'relative',
     },
 
@@ -104,7 +100,7 @@ const createHeaderSlideStyles = createUseStyles(() => ({
     },
 
     inputCloseButton: ({ color }) => ({
-        right: 0,
+        right: 20,
         bottom: 12,
         position: 'absolute',
         fontSize: 55,
@@ -122,7 +118,7 @@ const createHeaderSlideStyles = createUseStyles(() => ({
     }),
 
     submitButton: ({ color }) => ({
-        right: 0,
+        right: 20,
         bottom: -8,
         position: 'absolute',
         fontSize: 55,
@@ -207,7 +203,7 @@ export const HeaderSlide = ({ withCategories = true, categories, initialCurrentI
                 <span className={classes.bracket}>{"("}</span>
                 <span className={classes.blinkers}>{"༗"}</span>
                 <span className={classes.bracket}>{")"}</span>
-                {!menuOpened && withCategories && (
+                {withCategories && (
                     <span
                         className={classes.arrow}
                         onClick={onRightClick}
@@ -215,22 +211,23 @@ export const HeaderSlide = ({ withCategories = true, categories, initialCurrentI
                         {">"}
                     </span>
                 )}
-                {menuOpened
-                    ? (
-                        <CrossIcon
-                            className={classes.menuHandler}
-                            onClick={clearAllHandlers}
-                        />
-                    ) : (
-                        <BurgerIcon
-                            className={classes.menuHandler}
-                            onClick={setMenuOpened}
-                        />
-                    )}
+                <BurgerIcon
+                    className={classes.menuHandler}
+                    onClick={setMenuOpened}
+                />
             </div>
 
             {menuOpened && (
                 <div className={classes.burgerMenu}>
+                    <div className={classes.cursor}>
+                        <span className={classes.bracket}>{"("}</span>
+                        <span className={classes.blinkers}>{"༗"}</span>
+                        <span className={classes.bracket}>{")"}</span>
+                        <CrossIcon
+                            className={classes.menuHandler}
+                            onClick={clearAllHandlers}
+                        />
+                    </div>
                     {location.pathname === createAboutUrl()
                         ? (
                             <div

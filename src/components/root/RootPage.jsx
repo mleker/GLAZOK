@@ -23,6 +23,7 @@ const createRootPageStyles = createUseStyles(() => ({
         position: 'relative',
         minWidth: global.minWidth,
         minHeight: global.minHeight,
+        overflow: 'hidden',
     }),
 
     coverImage: {
@@ -35,8 +36,6 @@ const createRootPageStyles = createUseStyles(() => ({
         width: '100%',
         height: '100%',
     },
-
-
 }));
 
 const getTouches = (evt) => evt.touches;

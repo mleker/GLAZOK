@@ -54,7 +54,8 @@ jss.createStyleSheet({
     html: {
       height: '100%',
       minWidth: global.minWidth,
-      minHeight: global.minHeight,
+      // minHeight: global.minHeight,
+      minHeight: '100vh',
     },
 
     body: {

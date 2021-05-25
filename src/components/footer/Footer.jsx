@@ -95,6 +95,12 @@ const createFooterStyles = createUseStyles(() => ({
       fontSize: 12,
       paddingBottom: 5,
     }),
+
+    item: {
+      '&:hover': {
+        opacity: 1,
+      },
+    },
   },
 }));
 
