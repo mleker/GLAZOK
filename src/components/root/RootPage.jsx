@@ -37,8 +37,6 @@ const createRootPageStyles = createUseStyles(() => ({
     },
 }));
 
-const getTouches = (evt) => evt.touches;
-
 export const RootPage = ({ categories, posts }) => {
     const { theme } = React.useContext(ThemeContext);
     let location = useLocation();

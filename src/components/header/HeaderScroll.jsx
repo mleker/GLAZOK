@@ -212,23 +212,19 @@ export const HeaderScroll = ({ categories }) => {
     };
 
     window.addEventListener('resize', handleResize);
+    window.addEventListener('mousewheel', handleScroll, false);
 
     if (winWidth <= global.width3 || winHeight <= global.height2) {
       window.addEventListener('touchstart', handleTouchStart, false);
       window.addEventListener('touchmove', handleTouchMove, false);
-    } else {
-      window.addEventListener('touchmove', handleScroll, false);
-      window.addEventListener('mousewheel', handleScroll, false);
     }
 
     return () => {
       window.removeEventListener('resize', handleResize);
+      window.removeEventListener('mousewheel', handleScroll, false);
       if (winWidth <= global.width3 || winHeight <= global.height2) {
         window.removeEventListener('touchstart', handleTouchStart, false);
         window.removeEventListener('touchmove', handleTouchMove, false);
-      } else {
-        window.removeEventListener('touchmove', handleScroll, false);
-        window.removeEventListener('mousewheel', handleScroll, false);
       }
     }
   })

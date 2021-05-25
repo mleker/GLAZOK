@@ -262,7 +262,6 @@ export const HeaderSlide = ({ withCategories = true, categories }) => {
     };
 
     React.useEffect(() => {
-
         const handleResize = () => {
             setWinWidth(window.innerWidth);
             setWinHeight(window.innerHeight);
