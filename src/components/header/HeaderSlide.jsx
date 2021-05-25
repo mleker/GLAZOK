@@ -157,13 +157,44 @@ const createHeaderSlideStyles = createUseStyles(() => ({
     },
 }));
 
-export const HeaderSlide = ({ withCategories = true, categories, initialCurrentItem, onMenuClick }) => {
+const getTouches = (evt) => evt.touches;
+
+export const HeaderSlide = ({ withCategories = true, categories }) => {
     const history = useHistory();
+    const pathname = location.pathname.replace(/\//, '');
     const { theme } = React.useContext(ThemeContext);
     const [menuOpened, setMenuOpened] = React.useState(false);
     const [inputVisible, setInputVisible] = React.useState(false);
     const [inputValue, setInputValue] = React.useState('');
+    const [currentItem, setCurrentItem] = React.useState(0);
+    const [winWidth, setWinWidth] = React.useState(window.innerWidth);
+    const [winHeight, setWinHeight] = React.useState(window.innerHeight);
     const classes = createHeaderSlideStyles({ background: theme.background, color: theme.color });
+    let xDown = null;
+    let yDown = null;
+
+    React.useEffect(() => {
+        categories && categories.map((item, i) => {
+            if (item.custom_url === pathname) {
+                setCurrentItem(i)
+            }
+        });
+    }, [categories]);
+
+    React.useEffect(() => {
+        if (location.pathname !== createAboutUrl() && location.pathname !== createHomeUrl() && pathname !== categories[currentItem].custom_url) {
+            categories && categories.map((item, i) => {
+                if (item.custom_url === pathname) {
+                    setCurrentItem(i)
+                }
+            });
+        }
+    }, [location]);
+
+    const handleMenuClick = (i) => {
+        setCurrentItem(i);
+        history.push(categories[i].custom_url);
+    }
 
     const clearAllHandlers = () => {
         setMenuOpened(false);
@@ -172,20 +203,84 @@ export const HeaderSlide = ({ withCategories = true, categories, initialCurrentI
     }
 
     const onLeftClick = () => {
-        if (initialCurrentItem === 0) {
-            onMenuClick(categories.length - 1);
+        if (currentItem === 0) {
+            handleMenuClick(categories.length - 1);
         } else {
-            onMenuClick(--initialCurrentItem);
+            const newCurrentItem = currentItem - 1;
+            handleMenuClick(newCurrentItem);
         }
     }
 
     const onRightClick = () => {
-        if (initialCurrentItem === categories.length - 1) {
-            onMenuClick(0);
+        if (currentItem === categories.length - 1) {
+            handleMenuClick(0);
         } else {
-            onMenuClick(++initialCurrentItem);
+            const newCurrentItem = currentItem + 1;
+            handleMenuClick(newCurrentItem);
         }
     }
+
+    const handleTouchStart = (evt) => {
+        const firstTouch = getTouches(evt)[0];
+        xDown = firstTouch.clientX;
+        yDown = firstTouch.clientY;
+    };
+
+    const handleTouchMove = (evt) => {
+        if (!xDown || !yDown) {
+            return;
+        }
+
+        var xUp = evt.touches[0].clientX;
+        var yUp = evt.touches[0].clientY;
+
+        var xDiff = xDown - xUp;
+        var yDiff = yDown - yUp;
+
+        if (Math.abs(xDiff) > Math.abs(yDiff)) {
+            if (xDiff > 0) {
+                if (currentItem === categories.length - 1) {
+                    setCurrentItem(0);
+                    history.push(categories[0].custom_url);
+                } else {
+                    setCurrentItem(currentItem + 1);
+                    history.push(categories[currentItem + 1].custom_url);
+                }
+            } else {
+                if (currentItem === 0) {
+                    setCurrentItem(categories.length - 1);
+                    history.push(categories[categories.length - 1].custom_url);
+                } else {
+                    setCurrentItem(currentItem - 1);
+                    history.push(categories[currentItem - 1].custom_url);
+                }
+            }
+        }
+
+        xDown = null;
+        yDown = null;
+    };
+
+    React.useEffect(() => {
+
+        const handleResize = () => {
+            setWinWidth(window.innerWidth);
+            setWinHeight(window.innerHeight);
+        };
+
+        window.addEventListener('resize', handleResize);
+
+        if (winWidth <= global.width3 || winHeight <= global.height2) {
+            window.addEventListener('touchstart', handleTouchStart, false);
+            window.addEventListener('touchmove', handleTouchMove, false);
+        }
+
+        return () => {
+            window.removeEventListener('resize', handleResize);
+            window.removeEventListener('touchstart', handleTouchStart);
+            window.removeEventListener('touchmove', handleTouchMove);
+        }
+    })
 
     const handleChangeInputValue = (event) => setInputValue(event.target.value);
 
