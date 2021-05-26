@@ -25,6 +25,10 @@ const createHeaderSlideStyles = createUseStyles(() => ({
         },
     },
 
+    title: {
+        textAlign: 'center',
+    },
+
     blinkers: {
         animationName: '$blinker',
         animationDuration: '1s',
@@ -94,14 +98,14 @@ const createHeaderSlideStyles = createUseStyles(() => ({
 
     inputWrapper: {
         display: 'flex',
-        paddingTop: 20,
+        paddingBottom: 20,
         justifyContent: 'center',
         position: 'relative',
     },
 
     inputCloseButton: ({ color }) => ({
         right: 20,
-        bottom: 12,
+        bottom: 35,
         position: 'absolute',
         fontSize: 55,
         stroke: color,
@@ -119,7 +123,7 @@ const createHeaderSlideStyles = createUseStyles(() => ({
 
     submitButton: ({ color }) => ({
         right: 20,
-        bottom: -8,
+        bottom: 10,
         position: 'absolute',
         fontSize: 55,
         stroke: color,
@@ -310,6 +314,12 @@ export const HeaderSlide = ({ withCategories = true, categories }) => {
                     onClick={setMenuOpened}
                 />
             </div>
+
+            {location.pathname !== createAboutUrl() && (
+                <div className={classes.title}>
+                    {categories[currentItem].name}
+                </div>
+            )}
 
             {menuOpened && (
                 <div className={classes.burgerMenu}>

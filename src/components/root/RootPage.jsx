@@ -73,7 +73,7 @@ export const RootPage = ({ categories, posts }) => {
                 <div className={classes.rootPage}>
 
                     { winWidth <= global.width3 && winHeight < global.height2 && location.pathname !== createAboutUrl() && (
-                        <HeaderScroll categories={categories}/>
+                        <HeaderScroll categories={categories} />
                     )}
 
                     { winWidth <= global.width3 && winHeight >= global.height2 && (
@@ -84,7 +84,7 @@ export const RootPage = ({ categories, posts }) => {
                     )}
 
                     { winWidth > global.width3 && location.pathname !== createAboutUrl() && (
-                        <HeaderScroll categories={categories}/>
+                        <HeaderScroll categories={categories} />
                     )}
 
                     <Switch location={location}>
@@ -108,7 +108,14 @@ export const RootPage = ({ categories, posts }) => {
                         )}
                         <Redirect from={createHomeUrl()} to={categories[0].custom_url} />
                     </Switch>
-                    <Footer positionStatic={winHeight <= global.maxHeight && location.pathname !== createAboutUrl()} />
+
+                    {winWidth <= global.width3 && winHeight < global.height2 && (
+                        <Footer positionStatic={winHeight <= global.maxHeight && location.pathname !== createAboutUrl()} />
+                    )}
+
+                    {winWidth > global.width3 && (
+                        <Footer positionStatic={winHeight <= global.maxHeight && location.pathname !== createAboutUrl()} />
+                    )}
                 </div>
             )}
         </ThemeContext.Consumer>
