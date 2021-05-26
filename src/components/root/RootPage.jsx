@@ -14,7 +14,7 @@ const createRootPageStyles = createUseStyles(() => ({
 
     rootPage: ({ background, color }) => ({
         width: '100%',
-        height: '100vh',
+        height: '100%',
         display: 'flex',
         flexDirection: 'column',
         color: color,
