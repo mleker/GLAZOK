@@ -375,11 +375,11 @@ const createCategoryStyles = createUseStyles(() => ({
 
   [`@media (max-height: ${global.height2}px)`]: {
     frameWrapper: {
-      width: 345,
+      width: 300,
     },
 
     textFrameWrapper: {
-      width: 345,
+      width: 300,
     },
 
     textFrameFirstColumn: {
