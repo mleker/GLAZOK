@@ -27,11 +27,11 @@ global.maxWidth = 1055;
 global.width1 = 812;
 global.width2 = 760;
 global.width3 = 500;
-global.minWidth = 300;
+global.minWidth = 280;
 
 global.maxHeight = 640;
 global.height1 = 550;
-global.height2 = 420;
+global.height2 = 400;
 global.minHeight = 300;
 
 jss.createStyleSheet({
@@ -54,8 +54,7 @@ jss.createStyleSheet({
     html: {
       height: '100%',
       minWidth: global.minWidth,
-      // minHeight: global.minHeight,
-      minHeight: '100vh',
+      minHeight: global.minHeight,
     },
 
     body: {
@@ -92,11 +91,11 @@ jss.createStyleSheet({
       boxSizing: 'border-box',
     },
 
-    [`@media (max-width: ${global.width1}px) and (max-height: ${global.width1}px)`]: {
-      body: {
-        overflow: 'auto',
-      },
-    }
+    // [`@media (max-width: ${global.width1}px) and (max-height: ${global.width1}px)`]: {
+    //   body: {
+    //     overflow: 'auto',
+    //   },
+    // }
   },
 }).attach();
 

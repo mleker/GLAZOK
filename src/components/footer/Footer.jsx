@@ -11,6 +11,7 @@ const createFooterStyles = createUseStyles(() => ({
   footer: ({ color }) => ({
     fontSize: 20,
     paddingBottom: 30,
+    paddingTop: 10,
     left: '50%',
     bottom: 0,
     margin: '0 auto',
@@ -107,8 +108,6 @@ const createFooterStyles = createUseStyles(() => ({
 export const Footer = ({ positionStatic = false }) => {
   const history = useHistory();
   const { theme } = React.useContext(ThemeContext);
-  const [winWidth, setWinWidth] = React.useState(window.innerWidth);
-  const [winHeight, setWinHeight] = React.useState(window.innerHeight);
   const [inputValue, setInputValue] = React.useState('');
   const [inputVisible, setInputVisible] = React.useState(false);
   const inputWrapperHtmlEl = React.useRef();
@@ -116,15 +115,8 @@ export const Footer = ({ positionStatic = false }) => {
   let location = useLocation();
 
   React.useEffect(() => {
-    const handleResize = () => {
-      setWinWidth(window.innerWidth);
-      setWinHeight(window.innerHeight);
-    };
-
-    window.addEventListener('resize', handleResize);
     window.addEventListener('click', handleClick);
     return () => {
-      window.removeEventListener('resize', handleResize);
       window.removeEventListener('click', handleClick);
     }
   });

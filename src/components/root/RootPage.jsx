@@ -14,7 +14,7 @@ const createRootPageStyles = createUseStyles(() => ({
 
     rootPage: ({ background, color }) => ({
         width: '100%',
-        height: '100%',
+        height: '100vh',
         display: 'flex',
         flexDirection: 'column',
         color: color,
@@ -72,20 +72,17 @@ export const RootPage = ({ categories, posts }) => {
             {({ setTheme }) => (
                 <div className={classes.rootPage}>
 
-                    { winWidth <= global.width3 && winHeight < global.height2 && location.pathname !== createAboutUrl() && (
-                        <HeaderScroll categories={categories} />
-                    )}
-
-                    { winWidth <= global.width3 && winHeight >= global.height2 && (
-                        <HeaderSlide
-                            categories={categories}
-                            withCategories={location.pathname !== createAboutUrl()}
-                        />
-                    )}
-
-                    { winWidth > global.width3 && location.pathname !== createAboutUrl() && (
-                        <HeaderScroll categories={categories} />
-                    )}
+                    { winWidth <= global.width3 && winHeight >= global.height2
+                        ? (
+                            <HeaderSlide
+                                categories={categories}
+                                withCategories={location.pathname !== createAboutUrl()}
+                            />
+                        ) : (
+                            location.pathname !== createAboutUrl() && (
+                                <HeaderScroll categories={categories} />
+                            )
+                        )}
 
                     <Switch location={location}>
                         <Route path={createAboutUrl()} component={AboutPage} />
@@ -109,11 +106,7 @@ export const RootPage = ({ categories, posts }) => {
                         <Redirect from={createHomeUrl()} to={categories[0].custom_url} />
                     </Switch>
 
-                    {winWidth <= global.width3 && winHeight < global.height2 && (
-                        <Footer positionStatic={winHeight <= global.maxHeight && location.pathname !== createAboutUrl()} />
-                    )}
-
-                    {winWidth > global.width3 && (
+                    {!(winWidth <= global.width3 && winHeight >= global.height2) && (
                         <Footer positionStatic={winHeight <= global.maxHeight && location.pathname !== createAboutUrl()} />
                     )}
                 </div>
