@@ -45,16 +45,19 @@ const createFooterStyles = createUseStyles(() => ({
   input: ({ color }) => ({
     paddingLeft: 15,
     borderBottom: `2px solid ${color}`,
-    marginRight: 20,
     width: 200,
     color: color,
   }),
 
   disabledButton: {
+    paddingLeft: 20,
+    paddingRight: 20,
     opacity: 0.5,
   },
 
   activeButton: {
+    paddingLeft: 20,
+    paddingRight: 20,
     cursor: 'pointer',
   },
 
@@ -94,8 +97,32 @@ const createFooterStyles = createUseStyles(() => ({
   [`@media (max-height: ${global.maxHeight}px)`]: {
     footer: () => ({
       fontSize: 12,
+      paddingBottom: 10,
+    }),
+
+    inputMsg: {
+      top: 20,
+      fontSize: 8,
+      paddingBottom: 5,
+    },
+
+    errorMsg: {
+      top: 20,
+      fontSize: 8,
+      paddingBottom: 5,
+    },
+  
+    loadingMsg: ({ color }) => ({
+      top: 20,
+      fontSize: 8,
       paddingBottom: 5,
     }),
+  
+    successMsg: {
+      top: 20,
+      fontSize: 8,
+      paddingBottom: 5,
+    },
 
     item: {
       '&:hover': {

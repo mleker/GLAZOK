@@ -8,7 +8,7 @@ const createAboutPageStyles = createUseStyles(() => ({
 
   aboutPage: ({ background, color }) => ({
     width: '100%',
-    height: '100%',
+    height: '100vh',
     color: color,
     backgroundColor: background,
     maxWidth: 1000,
@@ -102,7 +102,7 @@ export const AboutPage = () => {
     }
     window.addEventListener('resize', handleResize);
     return () => window.removeEventListener('resize', handleResize);
-  })
+  }, [])
 
   React.useEffect(() => {
     setTheme(themes.black);
@@ -124,7 +124,7 @@ export const AboutPage = () => {
             {ruLang ? 'ENG' : 'RU'}
           </div>
           <div className={classes.content}>
-            {ruLang && (
+            {ruLang ? (
               <div className={classNames(classes.column, classes.columnLeft)}>
                 {'ГЛАЗОК (༗) —  это нестабильная видеоплатформа, медиа-мираж, эффект преломления визуальных потоков в пространстве институциональных и технологических связей разной плотности. Мы показываем фильмы, лекции, стримы и все, что посчитаем любопытным.'}
                 <br />
@@ -192,9 +192,7 @@ export const AboutPage = () => {
                   </div>
                 </div>
               </div>
-            )}
-
-            {!ruLang && (
+            ) : (
               <div className={classNames(classes.column, classes.columnRight)}>
                 {'GLAZOK (༗) is an unstable video platform, a media-mirage, a deflection effect, produced by visual streams running through space with varying densities of institutional and technological relations. We screen films, lectures, live-feeds, and everything that we find curious.'}
                 <br />

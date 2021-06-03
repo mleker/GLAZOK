@@ -14,7 +14,7 @@ const createRootPageStyles = createUseStyles(() => ({
 
     rootPage: ({ background, color }) => ({
         width: '100%',
-        height: '100%',
+        height: '100vh',
         display: 'flex',
         flexDirection: 'column',
         color: color,
@@ -34,6 +34,12 @@ const createRootPageStyles = createUseStyles(() => ({
         objectFit: 'cover',
         width: '100%',
         height: '100%',
+    },
+
+    [`@media (max-width: ${global.widthSe}px)`]: {
+        rootPage: () => ({
+            overflow: 'auto',
+        }),
     },
 }));
 
